@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "Z:\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
+    "C:\\Users\\UT010842\\Desktop\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
   },
   "projects": {
-    "Z:\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj": {
+    "C:\\Users\\UT010842\\Desktop\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "Z:\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectUniqueName": "C:\\Users\\UT010842\\Desktop\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "projectName": "QuickRentMyRide",
-        "projectPath": "Z:\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectPath": "C:\\Users\\UT010842\\Desktop\\QuickRentMyRide\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "packagesPath": "C:\\Users\\UT010842\\.nuget\\packages\\",
-        "outputPath": "Z:\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide\\obj\\",
+        "outputPath": "C:\\Users\\UT010842\\Desktop\\QuickRentMyRide\\QuickRentMyRide\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\UT010842\\AppData\\Roaming\\NuGet\\NuGet.Config",
