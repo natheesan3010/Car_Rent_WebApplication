@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>QuickRentMyRide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="css/account.css" rel="stylesheet" />
+
+     <!-- Favicon -->
+     <link href="img/favicon.ico" rel="icon">
+
+     <!-- Google Web Fonts -->
+     <link rel="preconnect" href="https://fonts.gstatic.com">
+     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet"> 
+ 
+     <!-- Font Awesome -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+ 
+     <!-- Libraries Stylesheet -->
+     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+ 
+     <!-- Customized Bootstrap Stylesheet -->
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+ 
+     <!-- Template Stylesheet -->
+     <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="post" action="/Account/Register">
+                <h1>Create Account</h1>
+                <input name="Username" placeholder="Username" required />
+                <input name="Email" type="email" placeholder="Email" required />
+                <input name="Password" type="password" placeholder="Password" required />
+                <input type="hidden" name="Role" value="Customer" />
+                <button>Register</button>
+            </form>
+        </div>
+
+        <div class="form-container sign-in-container">
+            <form method="post" action="/Account/Login">
+                <h1>Login</h1>
+                <input name="Username" placeholder="Username" required />
+                <input name="Password" type="password" placeholder="Password" required />
+                <button>Login</button>
+                <span style="color:red">@TempData["msg"]</span>
+            </form>
+        </div>
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To stay connected, please login</p>
+                    <button class="ghost" id="signIn">Login</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter details and start your ride!</p>
+                    <button class="ghost" id="signUp">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        document.getElementById('signUp').addEventListener('click', () =>
+            container.classList.add('right-panel-active'));
+        document.getElementById('signIn').addEventListener('click', () =>
+            container.classList.remove('right-panel-active'));
+    </script>
+</body>
+
+</html>
+</html>
