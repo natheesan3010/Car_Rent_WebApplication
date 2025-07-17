@@ -4727,11 +4727,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\UT010842\\Desktop\\New folder (2)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+      "projectUniqueName": "Z:\\Car_Rent_WebApplication\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
       "projectName": "QuickRentMyRide",
-      "projectPath": "C:\\Users\\UT010842\\Desktop\\New folder (2)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+      "projectPath": "Z:\\Car_Rent_WebApplication\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
       "packagesPath": "C:\\Users\\UT010842\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\UT010842\\Desktop\\New folder (2)\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
+      "outputPath": "Z:\\Car_Rent_WebApplication\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\UT010842\\AppData\\Roaming\\NuGet\\NuGet.Config",
