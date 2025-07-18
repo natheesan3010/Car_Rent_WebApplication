@@ -15,7 +15,7 @@
             <div class="container-fluid">
 
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/Logo/Logo.jpg" alt="Logo" width="50" height="40" class="me-1" />   @* Add Logo *@
+                    <img src="~/images/Logo.jpg" alt="Logo" width="50" height="40" class="me-1" />   @* Add Logo *@
                     <span>QuickRentMyRide</span>
                 </a>
 
@@ -24,26 +24,20 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    @* Right side Login/SignUp menu *@
+                    <ul class="navbar-nav">
+                        
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        
-                    </ul>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
 
-
-                    @* Search bar *@
-                    <form class="d-flex me-3" role="search" asp-controller="Search" asp-action="Results" method="get">
-                        <div class="position-relative">
-                            <input type="search" name="query" class="form-control  ps-3 pe-5" placeholder="Search..." aria-label="Search" />
-                            <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
-                        </div>
-                    </form>
-
-
-                    @* Right side Login/SignUp menu *@
-                    <ul class="navbar-nav">
                         <li class="nav-item d-flex align-items-center px-1">
                             <i class="bi bi-person-circle fs-5 text-muted"></i>
                         </li>
@@ -60,6 +54,8 @@
                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LoginRegister">Sign Up</a>
                         </li>
+
+
                     </ul>
 
 
@@ -72,13 +68,72 @@
             @RenderBody()
         </main>
     </div>
-   
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - QuickRentMyRide - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+           
+            <h1 class="display-4 text-uppercase text-center mb-5">Welcome To <br> <span class="text-primary">QUICK RENT MY RIDE</span></h1>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <img class="w-75 mb-4" src="~/images/about.png" alt="images">
+                    <p>Justo et eos et ut takimata sed sadipscing dolore lorem, et elitr labore labore voluptua no rebum sed, stet voluptua amet sed elitr ea dolor dolores no clita. Dolores diam magna clita ea eos amet, amet rebum voluptua vero vero sed clita accusam takimata. Nonumy labore ipsum sea voluptua sea eos sit justo, no ipsum sanctus sanctus no et no ipsum amet, tempor labore est labore no. Eos diam eirmod lorem ut eirmod, ipsum diam sadipscing stet dolores elitr elitr eirmod dolore. Magna elitr accusam takimata labore, et at erat eirmod consetetur tempor eirmod invidunt est, ipsum nonumy at et.</p>
+                </div>
+            </div>
+            
+        
+    </div>
+    <!-- About End -->
+        <!-- Footer Start -->
+        <div class="container-fluid text-white py-5 px-sm-3 px-md-5 position-relative"
+             style="margin-top: 90px; background: url('/images/Logo.jpg') no-repeat center center; background-size: cover; background-blend-mode: darken; background-color: rgba(33,37,41,0.95);">
+
+            <div class="row g-5 pt-4">
+                <!-- Contact Info -->
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-uppercase text-white mb-4">Get In Touch</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3 text-white-50"></i>Pannai road, Jaffna, Sri Lanka</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3 text-white-50"></i>+94-7044-56403</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3 text-white-50"></i>quickrentmyride@gmail.com</p>
+                    <h6 class="text-uppercase text-white mt-4 mb-3">Follow Us</h6>
+                    <div class="d-flex">
+                        <a class="btn btn-outline-light btn-social me-2" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social me-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Useful Links -->
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-uppercase text-white mb-4">Useful Links</h4>
+                    <div class="d-flex flex-column">
+                        <a class="text-white-50 mb-2 text-decoration-none" href="#"><i class="fa fa-angle-right me-2 text-light"></i>Privacy Policy</a>
+                        <a class="text-white-50 mb-2 text-decoration-none" href="#"><i class="fa fa-angle-right me-2 text-light"></i>Terms & Conditions</a>
+                        <a class="text-white-50 mb-2 text-decoration-none" href="#"><i class="fa fa-angle-right me-2 text-light"></i>New Member Registration</a>
+                        <a class="text-white-50 mb-2 text-decoration-none" href="#"><i class="fa fa-angle-right me-2 text-light"></i>Affiliate Programme</a>
+                        <a class="text-white-50 mb-2 text-decoration-none" href="#"><i class="fa fa-angle-right me-2 text-light"></i>Return & Refund</a>
+                        <a class="text-white-50 text-decoration-none" href="#"><i class="fa fa-angle-right me-2 text-light"></i>Help & FAQs</a>
+                    </div>
+                </div>
+
+                <!-- About Us -->
+                <div class="col-lg-4 col-md-12">
+                    <h4 class="text-uppercase text-white mb-4">About Us</h4>
+                    <p class="text-white-50">QuickRentMyRide is a trusted vehicle rental service based in Jaffna. We offer affordable and efficient mobility solutions across Sri Lanka.</p>
+                </div>
+            </div>
         </div>
-    </footer>
+
+        <!-- Copyright -->
+        <div class="container-fluid bg-black text-center py-3">
+            <p class="mb-1 text-white-50">&copy; <span class="text-white">QuickRentMyRide</span>. All Rights Reserved.</p>
+            <p class="m-0 text-white-50">Designed by <strong>Saja</strong></p>
+        </div>
+        <!-- Footer End -->
+
+
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
