@@ -17,41 +17,39 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = QuickRentMyRide
 build_property.RootNamespace = QuickRentMyRide
-build_property.ProjectDir = C:\Users\HP\OneDrive\Desktop\New folder\Car_Rent_WebApplication\QuickRentMyRide\
+build_property.ProjectDir = Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\HP\OneDrive\Desktop\New folder\Car_Rent_WebApplication\QuickRentMyRide
+build_property.MSBuildProjectDirectory = Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide
 build_property._RazorSourceGeneratorDebug = 
-build_property.EffectiveAnalysisLevelStyle = 8.0
-build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/Account/LoginRegister.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/Account/LoginRegister.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpblJlZ2lzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/Home/Index.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/Shared/Error.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/Shared/_ValidationScriptsPartial.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/_ViewImports.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/_ViewStart.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/HP/OneDrive/Desktop/New folder/Car_Rent_WebApplication/QuickRentMyRide/Views/Shared/_Layout.cshtml]
+[Z:/Car_Project/Car_Rent_WebApplication/QuickRentMyRide/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-j63j1fqko5
