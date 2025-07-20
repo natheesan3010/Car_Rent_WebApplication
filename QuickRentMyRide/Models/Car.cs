@@ -1,16 +1,28 @@
-﻿namespace QuickRentMyRide.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace QuickRentMyRide.Models
 {
     public class Car
     {
-        public Guid CarID { get; set; }  // Primary Key
+        public int CarID { get; set; }
+
+        [Required]
         public string NumberPlate { get; set; }
+
+        [Required]
         public string CarImage { get; set; }
+
+        [Required]
         public bool IsAvailable { get; set; }
+
+        [Required]
         public string CarBrand { get; set; }
+
+        [Required]
         public string CarModel { get; set; }
-        public double RentPerDay { get; set; }
 
-        public int AdminID { get; set; }  // Foreign Key
-
+        [Required]
+        public decimal RentPerDay { get; set; }
     }
+
 }

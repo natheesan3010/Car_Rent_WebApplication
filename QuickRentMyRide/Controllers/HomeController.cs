@@ -18,11 +18,6 @@ namespace QuickRentMyRide.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult Login()
         {
             return View();

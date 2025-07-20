@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickRentMyRide.Migrations
 {
     /// <inheritdoc />
-    public partial class Create : Migration
+    public partial class internalCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,14 +47,14 @@ namespace QuickRentMyRide.Migrations
                 name: "Cars",
                 columns: table => new
                 {
-                    CarID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NumberPlate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CarImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CarID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumberPlate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CarImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    CarBrand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CarModel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RentPerDay = table.Column<double>(type: "float", nullable: false),
-                    AdminID = table.Column<int>(type: "int", nullable: false)
+                    CarBrand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CarModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RentPerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,34 +65,21 @@ namespace QuickRentMyRide.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LicensePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ICNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LicensePhoto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ICNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Maintenances",
-                columns: table => new
-                {
-                    MaintenanceID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cost = table.Column<double>(type: "float", nullable: false),
-                    ServiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CarID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Maintenances", x => x.MaintenanceID);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,9 +127,6 @@ namespace QuickRentMyRide.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "Maintenances");
 
             migrationBuilder.DropTable(
                 name: "Payments");

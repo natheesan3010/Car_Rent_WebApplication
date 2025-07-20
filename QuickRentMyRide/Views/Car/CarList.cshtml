@@ -1,0 +1,77 @@
+﻿@model List<Car>
+@{
+    ViewBag.Title = "Car Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Car Management</h2>
+
+        <form method="get" asp-action="CarList" class="d-flex">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control me-2" placeholder="Search car..." />
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Number Plate</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Rent/Day</th>
+                <th>Available</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="8" class="text-center text-muted">No cars found</td></tr>
+            }
+            else
+            {
+                int index = 1 + (ViewBag.Page - 1) * 5;
+                foreach (var car in Model)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@car.NumberPlate</td>
+                        <td>@car.CarBrand</td>
+                        <td>@car.CarModel</td>
+                        <td>Rs. @car.RentPerDay</td>
+                        <td>@(car.IsAvailable ? "Yes" : "No")</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(car.CarImage))
+                            {
+                                <img src="@Url.Content("~/images/" + car.CarImage)" width="80" height="50" class="rounded" />
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="EditCar" asp-route-id="@car.CarID" class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-action="DeleteCar" asp-route-id="@car.CarID" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("CarList", new { search = ViewBag.Search, page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

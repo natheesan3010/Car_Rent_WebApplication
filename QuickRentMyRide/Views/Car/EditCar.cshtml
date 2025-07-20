@@ -1,0 +1,61 @@
+﻿@model Car
+@{
+    ViewBag.Title = "Edit Car";
+    
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Car Details</h2>
+
+    <form asp-action="EditCar" asp-controller="Car" method="post" enctype="multipart/form-data" class="border p-4 rounded shadow-sm bg-light">
+        <input type="hidden" asp-for="CarID" />
+
+        <div class="mb-3">
+            <label asp-for="NumberPlate" class="form-label">Number Plate</label>
+            <input asp-for="NumberPlate" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CarBrand" class="form-label">Car Brand</label>
+            <input asp-for="CarBrand" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CarModel" class="form-label">Car Model</label>
+            <input asp-for="CarModel" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="RentPerDay" class="form-label">Rent Per Day (Rs)</label>
+            <input asp-for="RentPerDay" class="form-control" type="number" min="0" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="IsAvailable" class="form-label">Available</label>
+            <select asp-for="IsAvailable" class="form-select">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Current Car Image</label><br />
+            @if (!string.IsNullOrEmpty(Model.CarImage))
+            {
+                <img src="~/images/@Model.CarImage" width="120" height="80" class="rounded border mb-2" />
+            }
+            else
+            {
+                <p class="text-muted">No image uploaded</p>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Change Image (Optional)</label>
+            <input type="file" name="CarImageFile" class="form-control" accept="images/*" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Car</button>
+        <a asp-action="CarList" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>

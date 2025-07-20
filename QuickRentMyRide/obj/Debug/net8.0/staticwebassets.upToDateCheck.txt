@@ -1,7 +1,7 @@
+wwwroot\css\login-style.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\about.png
-wwwroot\images\loginbac.jpg
 wwwroot\images\Logo.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -61,4 +61,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\css\login-style.css
