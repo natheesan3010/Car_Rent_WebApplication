@@ -1,0 +1,113 @@
+﻿@model List<Customer>
+@{
+    ViewBag.Title = "Customer Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    // Null-safe fallback for pagination variables
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    string searchTerm = ViewBag.Search ?? "";
+}
+
+<div class="container mt-4">
+    <h2>👥 Customer Management</h2>
+
+    @* Success Alert *@
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            ✅ @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @* Error Alert *@
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ❌ @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @* Search Form *@
+    <form method="get" class="mb-3 d-flex" role="search" aria-label="Search Customers">
+        <input type="text" name="search" value="@searchTerm" placeholder="Search by name or email" class="form-control me-2" />
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </form>
+
+    <a href="/Customer/Create" class="btn btn-primary mb-3">➕ Add New Customer</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Full Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>IC Number</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>License</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.FirstName @c.LastName</td>
+                    <td>@c.PhoneNumber</td>
+                    <td>@c.Email</td>
+                    <td>@c.ICNumber</td>
+                    <td>@c.Gender</td>
+                    <td>@c.DOB.ToShortDateString()</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(c.LicensePhoto))
+                        {
+                            <img src="@c.LicensePhoto" width="60" alt="License Photo" />
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = c.CustomerID })" class="btn btn-sm btn-warning me-1">✏️ Edit</a>
+
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@c.CustomerID">
+                            🗑️ Delete
+                        </button>
+
+                        @* Delete Modal *@
+                        <div class="modal fade" id="deleteModal-@c.CustomerID" tabindex="-1" aria-labelledby="deleteModalLabel-@c.CustomerID" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-danger">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="deleteModalLabel-@c.CustomerID">Confirm Delete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <p>Are you sure you want to delete <strong>@c.FirstName @c.LastName</strong>?</p>
+                                        <form method="post" asp-action="Delete" asp-controller="Customer">
+                                            <input type="hidden" name="CustomerId" value="@c.CustomerID" />
+                                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                            <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Cancel</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @* Pagination *@
+    <nav aria-label="Customer list pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="?page=@i&search=@searchTerm">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

@@ -1,7 +1,9 @@
 wwwroot\css\login-style.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\A.png
 wwwroot\images\about.png
+wwwroot\images\L1.png
 wwwroot\images\Logo.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

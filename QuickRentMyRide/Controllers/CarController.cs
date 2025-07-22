@@ -1,90 +1,109 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace QuickRentMyRide.Controllers
 {
     public class CarController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private const int DefaultPageSize = 5;
 
         public CarController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult CarList(string search, int page = 1, int pageSize = 5)
+        // GET: Car/CarList?search=abc&page=1
+        public async Task<IActionResult> CarList(string search, int page = 1, int pageSize = DefaultPageSize)
         {
             var query = _context.Cars.AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(c => c.NumberPlate.Contains(search) || c.CarBrand.Contains(search) || c.CarModel.Contains(search));
+                query = query.Where(c =>
+                    c.NumberPlate.Contains(search) ||
+                    c.CarBrand.Contains(search) ||
+                    c.CarModel.Contains(search));
             }
 
-            var totalCars = query.Count();
-            var cars = query
-                        .OrderByDescending(c => c.CarID)
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .ToList();
+            int totalCars = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalCars / (double)pageSize);
 
-            ViewBag.Search = search;
+            var cars = await query
+                .OrderByDescending(c => c.CarID)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.Search = search ?? "";
             ViewBag.Page = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCars / pageSize);
+            ViewBag.TotalPages = totalPages;
 
             return View(cars);
         }
 
         [HttpGet]
-        public IActionResult EditCar(int id)
+        public async Task<IActionResult> EditCar(int id)
         {
-            var car = _context.Cars.Find(id);
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null) return NotFound();
             return View(car);
         }
 
         [HttpPost]
-        public IActionResult EditCar(Car updatedCar, IFormFile CarImageFile)
+        public async Task<IActionResult> EditCar(Car updatedCar, IFormFile CarImageFile)
         {
-            var car = _context.Cars.Find(updatedCar.CarID);
+            if (!ModelState.IsValid)
+                return View(updatedCar);
 
-            if (car != null)
+            var car = await _context.Cars.FindAsync(updatedCar.CarID);
+            if (car == null) return NotFound();
+
+            car.NumberPlate = updatedCar.NumberPlate;
+            car.CarBrand = updatedCar.CarBrand;
+            car.CarModel = updatedCar.CarModel;
+            car.RentPerDay = updatedCar.RentPerDay;
+            car.IsAvailable = updatedCar.IsAvailable;
+
+            if (CarImageFile != null)
             {
-                car.NumberPlate = updatedCar.NumberPlate;
-                car.CarBrand = updatedCar.CarBrand;
-                car.CarModel = updatedCar.CarModel;
-                car.RentPerDay = updatedCar.RentPerDay;
-                car.IsAvailable = updatedCar.IsAvailable;
-
-                if (CarImageFile != null)
+                var fileName = Guid.NewGuid() + Path.GetExtension(CarImageFile.FileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                using (var stream = new FileStream(path, FileMode.Create))
                 {
-                    string fileName = Path.GetFileName(CarImageFile.FileName);
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        CarImageFile.CopyTo(stream);
-                    }
-                    car.CarImage = fileName;
+                    await CarImageFile.CopyToAsync(stream);
                 }
-
-                _context.SaveChanges();
+                car.CarImage = "/images/" + fileName;
             }
 
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Car updated successfully!";
             return RedirectToAction("CarList");
         }
 
-        public IActionResult DeleteCar(int id)
+        [HttpPost]
+        public async Task<IActionResult> DeleteCar(int id)
         {
-            var car = _context.Cars.Find(id);
-            if (car != null)
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null)
             {
-                _context.Cars.Remove(car);
-                _context.SaveChanges();
+                TempData["Error"] = "Car not found.";
+                return RedirectToAction("CarList");
             }
 
+            _context.Cars.Remove(car);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Car deleted successfully!";
             return RedirectToAction("CarList");
         }
-
     }
-
 }
