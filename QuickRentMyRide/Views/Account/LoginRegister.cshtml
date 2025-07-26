@@ -9,11 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="~/css/login-style.css" rel="stylesheet" />
-
-
 </head>
 <body>
     <div class="container" id="container">
+        <!-- Register Form -->
         <div class="form-container sign-up-container">
             <form method="post" action="/Account/Register">
                 <h1>Create Account</h1>
@@ -22,19 +21,41 @@
                 <input name="Password" type="password" placeholder="Password" required />
                 <input type="hidden" name="Role" value="Customer" />
                 <button>Register</button>
+
+                @if (TempData["msg"] != null && Context.Request.Method == "POST" && Context.Request.Path == "/Account/Register")
+                {
+                    <span style="color:red;">@TempData["msg"]</span>
+                }
             </form>
         </div>
 
+        <!-- Login Form -->
         <div class="form-container sign-in-container">
             <form method="post" action="/Account/Login">
                 <h1>Login</h1>
                 <input name="Username" placeholder="Username" required />
                 <input name="Password" type="password" placeholder="Password" required />
                 <button>Login</button>
-                <span style="color:red">@TempData["msg"]</span>
-            </form>
-        </div>
 
+                @if (TempData["msg"] != null && Context.Request.Method == "POST" && Context.Request.Path == "/Account/Login")
+                {
+                    <span style="color:red;">@TempData["msg"]</span>
+                }
+            </form>
+@* 
+            <!-- Social Media Login Buttons -->
+            <div class="social-login">
+                <p>Or login with</p>
+                <a href="/Account/ExternalLogin?provider=Google" class="social-btn google">
+                    <i class='bx bxl-google'></i> Google
+                </a>
+                <a href="/Account/ExternalLogin?provider=Facebook" class="social-btn facebook">
+                    <i class='bx bxl-facebook'></i> Facebook
+                </a>
+            </div>
+        </div> *@
+
+        <!-- Overlay -->
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">

@@ -5,9 +5,14 @@ namespace QuickRentMyRide.Models
     public class User
     {
         public Guid UserID { get; set; }  // Primary Key
-        public string Role { get; set; }  // admin / staff / customer
+        [Required]
         public string Username { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Required]
+        public string Role { get; set; }
     }
 }

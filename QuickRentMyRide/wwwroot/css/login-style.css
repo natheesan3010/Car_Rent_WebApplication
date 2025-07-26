@@ -166,3 +166,52 @@ p {
     font-size: 14px;
     margin: 15px 0 20px;
 }
+
+/* Social Media Login Buttons */
+/*.social-login {
+    margin-top: 20px;
+    text-align: center;
+}
+
+    .social-login p {
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+.social-btn {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+    .social-btn i {
+        margin-right: 8px;
+        vertical-align: middle;
+        font-size: 18px;
+    }*/
+
+    /* Google style */
+    /*.social-btn.google {
+        background-color: #db4437;
+    }
+
+        .social-btn.google:hover {
+            background-color: #c33d2e;
+        }*/
+
+    /* Facebook style */
+    /*.social-btn.facebook {
+        background-color: #3b5998;
+    }
+
+        .social-btn.facebook:hover {
+            background-color: #314d86;
+        }*/
