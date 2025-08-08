@@ -1358,3 +1358,10 @@ D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\refint\Quick
 D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\QuickRentMyRide.pdb
 D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\QuickRentMyRide.genruntimeconfig.cache
 D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\ref\QuickRentMyRide.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\Microsoft.Extensions.WebEncoders.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
+D:\Car PRO\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

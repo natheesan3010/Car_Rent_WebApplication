@@ -20,7 +20,10 @@ namespace QuickRentMyRide.Controllers
 
         // === CUSTOMER ===
         [HttpGet]
-        public IActionResult AddCustomer() => View();
+        public IActionResult AddCustomer()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddCustomer(Customer customer, IFormFile LicensePhotoFile)
@@ -41,7 +44,10 @@ namespace QuickRentMyRide.Controllers
 
         // === CAR ===
         [HttpGet]
-        public IActionResult AddCar() => View();
+        public IActionResult AddCar()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddCar(Car car, IFormFile CarImageFile)
