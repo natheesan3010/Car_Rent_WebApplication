@@ -1,0 +1,22 @@
+﻿
+.login-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.login-card:hover {
+    transform: translateY(-3px);
+}
+
+.social-btn i {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.form-floating label {
+    color: #6c757d;
+}
+

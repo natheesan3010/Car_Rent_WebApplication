@@ -1,128 +1,100 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace QuickRentMyRide.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(ApplicationDbContext db)
+        public AccountController(ApplicationDbContext context)
         {
-            _db = db;
+            _context = context;
         }
 
-        // GET: Login & Register Page
-        public IActionResult LoginRegister()
+        [HttpGet]
+        public IActionResult Login()
         {
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
-            {
-                string role = HttpContext.Session.GetString("Role");
-                if (role == "Admin") return RedirectToAction("Index", "Car");
-                else return RedirectToAction("CustomerDashboard");
-            }
-
             return View();
         }
 
-        // ------------------- Register ------------------------
         [HttpPost]
-        public IActionResult Register(User user)
+        public IActionResult Login(string username, string password)
         {
-            if (ModelState.IsValid)
-            {
-                if (_db.Users.Any(u => u.Username.ToLower() == user.Username.ToLower()))
-                {
-                    TempData["msg"] = "Username already taken!";
-                    return RedirectToAction("LoginRegister");
-                }
+            var user = _context.Users
+                .FirstOrDefault(u => u.Username == username && u.Password == password);
 
-                user.Password = HashPassword(user.Password); // Password hashing
-                _db.Users.Add(user);
-                _db.SaveChanges();
-
-                TempData["msg"] = "Registered successfully!";
-            }
-
-            return RedirectToAction("LoginRegister");
-        }
-
-        // -------------------- Login ------------------------
-        [HttpPost]
-        public IActionResult Login(User user)
-        {
-            string hashedInput = HashPassword(user.Password);
-
-            var match = _db.Users.FirstOrDefault(u =>
-                u.Username.ToLower() == user.Username.ToLower() &&
-                u.Password == hashedInput);
-
-            if (match != null)
-            {
-                HttpContext.Session.SetString("Username", match.Username);
-                HttpContext.Session.SetString("Role", match.Role);
-
-                if (match.Role == "Admin")
-                    return RedirectToAction("Index", "Car");
-                else
-                    return RedirectToAction("CustomerDashboard");
-            }
-
-            TempData["msg"] = "Invalid username or password!";
-            return RedirectToAction("LoginRegister");
-        }
-
-        // ------------------- Forgot Password ------------------------
-        [HttpPost]
-        public IActionResult ResetPassword(string username, string newPassword)
-        {
-            var user = _db.Users.FirstOrDefault(u => u.Username.ToLower() == username.ToLower());
             if (user != null)
             {
-                user.Password = HashPassword(newPassword);
-                _db.SaveChanges();
-                TempData["msg"] = "Password reset successful!";
+                // Store session data
+                HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetString("Role", user.Role);
+
+                // Check role
+                if (user.Role == "Customer")
+                {
+                    return RedirectToAction("C_Dashboard", "Customer");
+                }
+                else
+                {
+                    ViewBag.Error = "Only customers can log in here.";
+                    HttpContext.Session.Clear(); // remove any partial login
+                    return View();
+                }
             }
-            else
-            {
-                TempData["msg"] = "Username not found!";
-            }
 
-            return RedirectToAction("LoginRegister");
-        }
-
-        // ------------------- Customer Dashboard ------------------------
-        public IActionResult CustomerDashboard()
-        {
-            string role = HttpContext.Session.GetString("Role");
-            if (string.IsNullOrEmpty(role) || role != "Customer")
-                return RedirectToAction("LoginRegister");
-
-            ViewBag.Name = HttpContext.Session.GetString("Username");
+            // Invalid login
+            ViewBag.Error = "Invalid username or password.";
             return View();
         }
 
-        // ------------------- Logout ------------------------
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("LoginRegister");
+            return RedirectToAction("Login");
         }
 
-        // ------------------- Password Hashing Method ------------------------
-        private string HashPassword(string password)
+        [HttpGet]
+        public IActionResult Register()
         {
-            using (var sha256 = SHA256.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(password);
-                var hash = sha256.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
-            }
+            return View();
         }
+
+        [HttpPost]
+        public IActionResult Register(string username, string password, string confirmPassword)
+        {
+            if (password != confirmPassword)
+            {
+                ViewBag.Error = "Passwords do not match!";
+                return View();
+            }
+
+            // Check if username exists
+            var existingUser = _context.Users.FirstOrDefault(u => u.Username == username);
+            if (existingUser != null)
+            {
+                ViewBag.Error = "Username already taken!";
+                return View();
+            }
+
+            // Save to database
+            var newUser = new User
+            {
+                Username = username,
+                Password = password, // ⚠️ Later we should hash this
+                Role = "Customer"
+            };
+
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+
+            ViewBag.Success = "Account created successfully! You can now login.";
+            return View();
+        }
+
     }
 }

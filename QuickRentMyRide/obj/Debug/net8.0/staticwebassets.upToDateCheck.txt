@@ -1,4 +1,4 @@
-wwwroot\css\login-style.css
+wwwroot\css\login.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\A.png

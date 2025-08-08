@@ -48,6 +48,11 @@ namespace QuickRentMyRide.Controllers
             return View(customers);
         }
 
+        public IActionResult C_Dashboard()
+        {
+            return View();
+        }
+
         public IActionResult Create()
         {
             return View();

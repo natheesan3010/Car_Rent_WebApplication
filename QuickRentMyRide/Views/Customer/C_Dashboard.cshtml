@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "CustomerDashboard";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml"; // Use your customer layout
+}
+
+<div class="container mt-5">
+    <h2>Welcome, @Context.Session.GetString("Username")!</h2>
+    <p>This is your customer dashboard. From here, you can book cars, view your bookings, and manage your profile.</p>
+</div>
