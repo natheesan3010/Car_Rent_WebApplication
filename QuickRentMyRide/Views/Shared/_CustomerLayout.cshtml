@@ -12,7 +12,8 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
+        <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #407af7 ;">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
                     <img src="~/images/Logo.jpg" alt="Logo" width="50" height="40" class="me-2" />
@@ -24,14 +25,29 @@
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="About">About</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">LogOut</a></li>
-                        
-                    </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Contact">
+                                <i class="bi bi-envelope"></i> Contact
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">
+                                <i class="bi bi-info-circle"></i> About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link logout-link" asp-controller="Account" asp-action="Logout">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
                     </ul>
                 </div>
+
             </div>
         </nav>
     </header>

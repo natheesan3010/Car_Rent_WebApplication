@@ -117,5 +117,21 @@ namespace QuickRentMyRide.Controllers
             ViewBag.Error = "Invalid username or password.";
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // Session-ஐ முழுவதும் clear பண்ணு
+            HttpContext.Session.Clear();
+
+            // Cache disable பண்ணு (browser back button prevent)
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
+
+            // Login page-க்கு redirect பண்ணு
+            return RedirectToAction("Login", "Account");
+        }
+
     }
 }

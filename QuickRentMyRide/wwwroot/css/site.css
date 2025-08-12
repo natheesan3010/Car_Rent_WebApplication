@@ -1,22 +1,100 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
+
+/* ===== Premium Navbar Link Style ===== */
+.navbar-nav .nav-link {
+    position: relative;
+    font-weight: 600;
+    padding: 8px 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Text & icon gap */
+    overflow: hidden;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    color: #212529; /* Bootstrap default link color */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    /* Icon inside link */
+    .navbar-nav .nav-link i {
+        transform: translateX(-5px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    /* Hover text glow */
+    .navbar-nav .nav-link:hover {
+        color: #ff7e5f;
+        text-shadow: 0 0 8px rgb(86, 115, 245), 0 0 12px rgb(86, 115, 245);
+    }
+
+        /* Show icon on hover */
+        .navbar-nav .nav-link:hover i {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+    /* Gradient underline */
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ff7e5f, #feb47b);
+        left: 0;
+        bottom: -3px;
+        border-radius: 2px;
+        transition: width 0.4s ease;
+    }
+
+    /* On hover underline full width */
+    .navbar-nav .nav-link:hover::after {
+        width: 100%;
+    }
+
+    /* Ripple Effect */
+    .navbar-nav .nav-link::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 126, 95, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.5s ease, height 0.5s ease;
+        z-index: -1;
+    }
+
+    /* Trigger ripple on hover */
+    .navbar-nav .nav-link:hover::before {
+        width: 200%;
+        height: 500%;
+    }
