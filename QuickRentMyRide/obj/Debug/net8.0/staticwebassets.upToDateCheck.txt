@@ -1,10 +1,18 @@
 wwwroot\css\login.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
-wwwroot\images\A.png
+wwwroot\images\89de2be91be544eeb77e28bd5113d897.webp
 wwwroot\images\about.png
+wwwroot\images\Banner1.jpg
+wwwroot\images\Banner2.webp
+wwwroot\images\Banner3.jpg
+wwwroot\images\car-cars-lamborghini-aventador-63764.jpg
 wwwroot\images\L1.png
 wwwroot\images\Logo.jpg
+wwwroot\images\OIP (1).webp
+wwwroot\images\OIP (2).webp
+wwwroot\images\OIP.webp
+wwwroot\images\Thumbs.db
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
