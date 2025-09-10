@@ -6,8 +6,11 @@ wwwroot\images\about.png
 wwwroot\images\Banner1.jpg
 wwwroot\images\Banner2.webp
 wwwroot\images\Banner3.jpg
+wwwroot\images\Banner4.jpg
+wwwroot\images\Banner5.jpg
+wwwroot\images\C1.jpg
+wwwroot\images\C2.webp
 wwwroot\images\car-cars-lamborghini-aventador-63764.jpg
-wwwroot\images\L1.png
 wwwroot\images\Logo.jpg
 wwwroot\images\OIP (1).webp
 wwwroot\images\OIP (2).webp

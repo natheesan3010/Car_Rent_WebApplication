@@ -12,7 +12,7 @@ using QuickRentMyRide.Data;
 namespace QuickRentMyRide.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250909061152_Create")]
+    [Migration("20250910041044_Create")]
     partial class Create
     {
         /// <inheritdoc />
