@@ -1729,10 +1729,6 @@ Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\Microsof
 Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
 Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
-Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\rpswa.dswa.cache.json
-Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\rjimswa.dswa.cache.json
-Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\scopedcss\Views\Shared\_CustomerLayout.cshtml.rz.scp.css
 Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\staticwebassets.build.json.cache
 Z:\Car_Project\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\staticwebassets.build.endpoints.json

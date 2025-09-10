@@ -24,26 +24,31 @@ namespace QuickRentMyRide.Migrations
 
             modelBuilder.Entity("QuickRentMyRide.Models.Booking", b =>
                 {
-                    b.Property<Guid>("BookingID")
+                    b.Property<int>("BookingID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingID"));
 
                     b.Property<int>("CarID")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PickupDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ReturnDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("TotalCost")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookingID");
+
+                    b.HasIndex("CarID");
 
                     b.ToTable("Bookings");
                 });
@@ -74,6 +79,9 @@ namespace QuickRentMyRide.Migrations
                     b.Property<string>("NumberPlate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PricePerDay")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("RentPerDay")
                         .HasColumnType("decimal(18,2)");
@@ -178,6 +186,17 @@ namespace QuickRentMyRide.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("QuickRentMyRide.Models.Booking", b =>
+                {
+                    b.HasOne("QuickRentMyRide.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
                 });
 #pragma warning restore 612, 618
         }

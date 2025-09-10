@@ -23,6 +23,7 @@ namespace QuickRentMyRide.Models
 
         [Required]
         public decimal RentPerDay { get; set; }
+        public int PricePerDay { get; internal set; }
     }
 
 }

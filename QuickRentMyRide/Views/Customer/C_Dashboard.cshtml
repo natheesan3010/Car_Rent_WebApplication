@@ -47,7 +47,7 @@
     </button>
 </div>
 
-<h3 class="p-5"> Recent product</h3>
+<h3 class="p-5"> Click Booking</h3>
 
 <div class="d-flex justify-content-between">
     <div class="card" style="width: 18rem;">
@@ -55,7 +55,9 @@
         <div class="card-body">
             <h5 class="card-title">Casual Outdoor</h5>
             <p class="text-primary">LKR 1,250.00</p>
-            <a href="#" class="btn btn-primary">BOOKING</a>
+            <a asp-controller="Booking" asp-action="Create" asp-route-carId="1" class="btn btn-primary">BOOKING</a>
+
+
         </div>
     </div>
 

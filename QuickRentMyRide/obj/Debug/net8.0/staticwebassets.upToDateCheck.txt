@@ -8,7 +8,6 @@ wwwroot\images\Banner2.webp
 wwwroot\images\Banner3.jpg
 wwwroot\images\Banner4.jpg
 wwwroot\images\Banner5.jpg
-wwwroot\images\C1.jpg
 wwwroot\images\C2.webp
 wwwroot\images\car-cars-lamborghini-aventador-63764.jpg
 wwwroot\images\Logo.jpg
@@ -74,3 +73,4 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\images\C1.jpg

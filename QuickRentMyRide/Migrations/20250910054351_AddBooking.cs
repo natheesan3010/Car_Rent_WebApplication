@@ -6,27 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickRentMyRide.Migrations
 {
     /// <inheritdoc />
-    public partial class Create : Migration
+    public partial class AddBooking : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Bookings",
-                columns: table => new
-                {
-                    BookingID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalCost = table.Column<double>(type: "float", nullable: false),
-                    CustomerID = table.Column<int>(type: "int", nullable: false),
-                    CarID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bookings", x => x.BookingID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Cars",
                 columns: table => new
@@ -38,7 +22,8 @@ namespace QuickRentMyRide.Migrations
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     CarBrand = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CarModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RentPerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    RentPerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PricePerDay = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,6 +80,34 @@ namespace QuickRentMyRide.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.UserID);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    BookingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CarID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.BookingID);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Cars_CarID",
+                        column: x => x.CarID,
+                        principalTable: "Cars",
+                        principalColumn: "CarID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_CarID",
+                table: "Bookings",
+                column: "CarID");
         }
 
         /// <inheritdoc />
@@ -104,9 +117,6 @@ namespace QuickRentMyRide.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Cars");
-
-            migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
@@ -114,6 +124,9 @@ namespace QuickRentMyRide.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Cars");
         }
     }
 }
