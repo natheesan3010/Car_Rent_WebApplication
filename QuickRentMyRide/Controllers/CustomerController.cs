@@ -6,143 +6,111 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace QuickRentMyRide.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private const int PageSize = 10; // Items per page
 
         public CustomerController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Customer/Index?search=abc&page=2
-        public async Task<IActionResult> Index(string search, int page = 1)
-        {
-            var query = _context.Customers.AsQueryable();
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                query = query.Where(c =>
-                    c.FirstName.Contains(search) ||
-                    c.LastName.Contains(search) ||
-                    c.Email.Contains(search));
-            }
-
-            int totalRecords = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalRecords / (double)PageSize);
-
-            var customers = await query
-                .OrderBy(c => c.FirstName)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize)
-                .ToListAsync();
-
-            ViewBag.TotalPages = totalPages;
-            ViewBag.CurrentPage = page;
-            ViewBag.Search = search;
-
-            return View(customers);
-        }
-
+        // Customer Dashboard
         public IActionResult C_Dashboard()
         {
+            ViewData["ActivePage"] = "Dashboard"; // Active page set
             return View();
         }
 
-        public IActionResult Create()
+        // GET: Profile
+        public async Task<IActionResult> Profile()
         {
-            return View();
-        }
+            ViewData["ActivePage"] = "Profile"; // Active page set
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Customer customer, IFormFile photo)
-        {
-            if (ModelState.IsValid)
-            {
-                if (photo != null)
-                {
-                    var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await photo.CopyToAsync(stream);
-                    }
-                    customer.LicensePhoto = "/images/" + fileName;
-                }
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
 
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
-
-                TempData["Success"] = "Customer created successfully!";
-                return RedirectToAction(nameof(Index));
-            }
-            return View(customer);
-        }
-
-        public async Task<IActionResult> Edit(int id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
             if (customer == null) return NotFound();
             return View(customer);
         }
 
+        // POST: Update Profile
         [HttpPost]
-        public async Task<IActionResult> Edit(Customer customer, IFormFile photo)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(Customer model, IFormFile photo)
         {
-            if (ModelState.IsValid)
+            ViewData["ActivePage"] = "Profile"; // Active page set
+
+            if (!ModelState.IsValid)
+                return View("Profile", model);
+
+            var customer = await _context.Customers.FindAsync(model.CustomerID);
+            if (customer == null) return NotFound();
+
+            customer.FirstName = model.FirstName;
+            customer.LastName = model.LastName;
+            customer.Email = model.Email;
+            customer.PhoneNumber = model.PhoneNumber;
+            customer.Address = model.Address;
+
+            if (photo != null)
             {
-                var existingCustomer = await _context.Customers.FindAsync(customer.CustomerID);
-                if (existingCustomer == null) return NotFound();
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                if (!Directory.Exists(imagePath))
+                    Directory.CreateDirectory(imagePath);
 
-                // Update properties
-                existingCustomer.FirstName = customer.FirstName;
-                existingCustomer.LastName = customer.LastName;
-                existingCustomer.PhoneNumber = customer.PhoneNumber;
-                existingCustomer.Email = customer.Email;
-                existingCustomer.ICNumber = customer.ICNumber;
-                existingCustomer.Gender = customer.Gender;
-                existingCustomer.DOB = customer.DOB;
-                existingCustomer.Address = customer.Address;
+                var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
+                var filePath = Path.Combine(imagePath, fileName);
 
-                if (photo != null)
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await photo.CopyToAsync(stream);
-                    }
-                    existingCustomer.LicensePhoto = "/images/" + fileName;
+                    await photo.CopyToAsync(stream);
                 }
-
-                _context.Customers.Update(existingCustomer);
-                await _context.SaveChangesAsync();
-
-                TempData["Success"] = "Customer updated successfully!";
-                return RedirectToAction(nameof(Index));
-            }
-            return View(customer);
-        }
-
-        [HttpPost]  // Use POST for delete actions
-        public async Task<IActionResult> Delete(int customerId)
-        {
-            var customer = await _context.Customers.FindAsync(customerId);
-            if (customer == null)
-            {
-                TempData["Error"] = "Customer not found.";
-                return RedirectToAction(nameof(Index));
+                customer.LicensePhoto = "/images/" + fileName;
             }
 
-            _context.Customers.Remove(customer);
+            _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = "Customer deleted successfully!";
-            return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = "Profile updated successfully!";
+            return RedirectToAction("Profile");
+        }
+
+        // --- Availability Search ---
+        [HttpGet]
+        public async Task<IActionResult> CheckAvailability(DateTime? startDate, DateTime? endDate)
+        {
+            ViewData["ActivePage"] = "Availability"; // Active page set
+
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+
+            if (!startDate.HasValue || !endDate.HasValue || endDate <= startDate || startDate < DateTime.Today)
+            {
+                ViewBag.ShowResults = false;
+                return View("AvailabilitySearch", new List<Car>());
+            }
+
+            var bookedCarIDs = await _context.Bookings
+                .Where(b =>
+                    (startDate >= b.StartDate && startDate <= b.EndDate) ||
+                    (endDate >= b.StartDate && endDate <= b.EndDate) ||
+                    (startDate <= b.StartDate && endDate >= b.EndDate))
+                .Select(b => b.CarID)
+                .ToListAsync();
+
+            var availableCars = await _context.Cars
+                .Where(c => !bookedCarIDs.Contains(c.CarID))
+                .ToListAsync();
+
+            ViewBag.ShowResults = true;
+            return View("AvailabilitySearch", availableCars);
         }
     }
 }

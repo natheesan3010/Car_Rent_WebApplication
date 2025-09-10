@@ -12,6 +12,8 @@ namespace QuickRentMyRide.Models
         [Required]
         public string LastName { get; set; }
 
+        public string Username { get; set; }
+
         [Required]
         public string PhoneNumber { get; set; }
 

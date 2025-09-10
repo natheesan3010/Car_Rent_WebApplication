@@ -5,62 +5,62 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - QuickRentMyRide</title>
+
+    <!-- Bootstrap & Icons -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QuickRentMyRide.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Header Navbar -->
     <header>
-      
-        <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #407af7 ;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
             <div class="container-fluid">
-
-                <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Dashboard">
-                    <img src="~/images/Logo.jpg" alt="Logo" width="50" height="40" class="me-1" />
-                    <span>QuickRentMyRide</span>
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Admin" asp-action="Dashboard">
+                    <img src="~/images/Logo.jpg" alt="Logo" width="50" height="40" class="me-2" />
+                    <span class="fw-bold">QuickRentMyRide</span>
                 </a>
 
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="Dashboard">
-                                <i class="bi bi-house-door"></i> Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="AddCustomer">
-                                <i class="bi bi-envelope"></i> AddCustomer
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="AddCar">
-                                <i class="bi bi-info-circle"></i> AddCar
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Customer" asp-action="Index">
-                                <i class="bi bi-box-arrow-in-right"></i> Manage Customers
-                            </a>
-                        </li>
-                        
-                    </ul>
-
-
-                </div>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        data-bs-target="#mainNavbar" aria-controls="mainNavbar"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="AddCustomer">
+                                <i class="bi bi-person-plus"></i> Add Customer
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="AddCar">
+                                <i class="bi bi-car-front"></i> Add Car
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Customer" asp-action="Index">
+                                <i class="bi bi-people"></i> Manage Customers
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
 
+    <!-- Main Body -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -69,7 +69,7 @@
 
     @* Footer *@
     <div class="container-fluid text-white py-5 px-sm-3 px-md-5 position-relative"
-         style="margin-top: 90px; background: url('/images/Logo.jpg') no-repeat center center; background-size: cover; background-blend-mode: darken; background-color: rgba(33,37,41,0.95);">
+         style="margin-top: 90px; background: url('../../wwwroot/images/Logo.jpg') no-repeat center center; background-size: cover; background-blend-mode: darken;">
 
         <div class="row g-5 pt-4">
             <div class="col-lg-4 col-md-6">
@@ -105,9 +105,11 @@
 
     <div class="container-fluid bg-black text-center py-3">
         <p class="mb-1 text-white-50">&copy; <span class="text-white">QuickRentMyRide</span>. All Rights Reserved.</p>
-        <p class="m-0 text-white-50">Designed by <strong>Group of QuickRentMyRide </strong></p>
+        <p class="m-0 text-white-50">Designed by <strong>Group of QuickRentMyRide</strong></p>
     </div>
 
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,0 +1,92 @@
+﻿@model IEnumerable<QuickRentMyRide.Models.Car>
+@{
+    ViewBag.Title = "Check Car Availability";
+    var startDate = ViewBag.StartDate as DateTime?;
+    var endDate = ViewBag.EndDate as DateTime?;
+    var showResults = ViewBag.ShowResults as bool? ?? false;
+}
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">🚗 Check Car Availability</h1>
+        <p class="text-muted">Select your start and end dates to find available cars</p>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card shadow-lg border-0 rounded-4 mb-5">
+        <div class="card-body p-4">
+            <form method="get" asp-action="CheckAvailability" asp-controller="Customer" class="row g-4">
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label fw-semibold"><i class="bi bi-calendar-date"></i> Start Date</label>
+                    <input type="date" class="form-control form-control-lg" id="startDate" name="startDate" required
+                           value="@startDate?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label fw-semibold"><i class="bi bi-calendar-date-fill"></i> End Date</label>
+                    <input type="date" class="form-control form-control-lg" id="endDate" name="endDate" required
+                           value="@endDate?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-lg btn-primary w-100 shadow-sm">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    @if (showResults)
+    {
+        @if (!Model.Any())
+        {
+            <div class="alert alert-warning text-center rounded-4 shadow-sm p-4">
+                <i class="bi bi-exclamation-triangle-fill fs-3 text-warning"></i>
+                <h5 class="mt-2">No cars available for the selected dates</h5>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var car in Model)
+                {
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card rounded-4 overflow-hidden position-relative shadow-lg"
+                             style="background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); transition: transform 0.3s, box-shadow 0.3s;"
+                             onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.3)';"
+                             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.15)';">
+
+                            <!-- Car Image -->
+                            <img src="@car.CarImage" class="card-img-top" style="height:220px; object-fit:cover;" />
+
+                            <!-- Price Badge -->
+                            <span class="badge bg-success position-absolute top-0 end-0 m-3 fs-6 shadow">
+                                Rs. @car.RentPerDay /day
+                            </span>
+
+                            <div class="card-body d-flex flex-column">
+                                <!-- Car Info -->
+                                <h5 class="card-title text-primary">@car.CarBrand @car.CarModel</h5>
+                                <p class="card-text text-muted mb-3">
+                                    <i class="bi bi-upc-scan me-1" style="transition: transform 0.3s;"></i> <b>Number Plate:</b> @car.NumberPlate
+                                </p>
+
+                                <!-- Book Button -->
+                                <div class="mt-auto">
+                                    <a asp-action="Create" asp-controller="Booking" asp-route-carID="@car.CarID"
+                                       class="btn btn-success w-100 shadow-sm"
+                                       style="transition: all 0.3s;"
+                                       onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#28a745';"
+                                       onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#198754';">
+                                        <i class="bi bi-check-circle me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

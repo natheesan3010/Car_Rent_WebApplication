@@ -2,24 +2,87 @@
 
 @{
     ViewBag.Title = "Booking Details";
-    var car = Model.Car;
 }
 
 <div class="container py-5">
-    <h2>Booking Details</h2>
-    <div class="card p-4 shadow">
-        <h4>Car Information</h4>
-        <p><strong>Brand & Model:</strong> @car.CarBrand @car.CarModel</p>
-        <p><strong>Price per Day:</strong> LKR @car.PricePerDay</p>
-
-        <h4>Booking Information</h4>
-        <p><strong>Start Date:</strong> @Model.StartDate.ToString("yyyy-MM-dd")</p>
-        <p><strong>End Date:</strong> @Model.EndDate.ToString("yyyy-MM-dd")</p>
-        <p><strong>Total Price:</strong> LKR @Model.TotalPrice</p>
-        <p><strong>Booked By (UserID):</strong> @Model.UserID</p>
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">🚗 Booking Summary</h2>
+        <p class="text-muted">Your car booking details are shown below</p>
     </div>
 
-    <div class="mt-3">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
+    <div class="row g-4">
+        <!-- 🔹 Car Information Card -->
+        <div class="col-md-6">
+            <div class="card rounded-4 shadow-lg border-0" style="backdrop-filter: blur(6px); background: rgba(255,255,255,0.1);">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h5 class="mb-0">Car Information</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Brand</span>
+                            <span class="fw-bold">@Model.Car.CarBrand</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Model</span>
+                            <span class="fw-bold">@Model.Car.CarModel</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Number Plate</span>
+                            <span class="badge bg-dark">@Model.Car.NumberPlate</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Price Per Day</span>
+                            <span class="fw-bold text-success">@Model.Car.RentPerDay.ToString("C")</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔹 Booking Information Card -->
+        <div class="col-md-6">
+            <div class="card rounded-4 shadow-lg border-0" style="backdrop-filter: blur(6px); background: rgba(255,255,255,0.1);">
+                <div class="card-header bg-success text-white rounded-top-4">
+                    <h5 class="mb-0">Booking Information</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Booking ID</span>
+                            <span class="fw-bold">#@Model.BookingID</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Start Date</span>
+                            <span class="fw-bold">@Model.StartDate.ToString("dd/MM/yyyy")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>End Date</span>
+                            <span class="fw-bold">@Model.EndDate.ToString("dd/MM/yyyy")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total Price</span>
+                            <span class="fw-bold text-danger fs-5">@Model.TotalPrice.ToString("C")</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 Action Buttons -->
+    <div class="text-center mt-5">
+        <a asp-action="Create" asp-route-carID="@Model.CarID" class="btn btn-lg btn-primary me-2 shadow-sm"
+           style="transition: transform 0.3s;"
+           onmouseover="this.style.transform='scale(1.05)';"
+           onmouseout="this.style.transform='scale(1)';">
+            <i class="bi bi-plus-circle me-1"></i> Book Again
+        </a>
+        <a asp-controller="Car" asp-action="Index" class="btn btn-lg btn-outline-secondary shadow-sm"
+           style="transition: transform 0.3s;"
+           onmouseover="this.style.transform='scale(1.05)';"
+           onmouseout="this.style.transform='scale(1)';">
+            <i class="bi bi-arrow-left me-1"></i> Back to Cars
+        </a>
     </div>
 </div>

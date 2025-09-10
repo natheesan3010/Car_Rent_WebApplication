@@ -108,3 +108,40 @@ body {
 .carousel-item {
     height: 500px; /* எல்லா slide களுக்கும் ஒரே height */
 }
+
+/* Sticky Navbar */
+/*.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}*/
+
+/* Active menu highlighting */
+/*.navbar-nav .nav-link.active {
+    font-weight: 600;
+    color: #fff !important;
+    background-color: #1d63d3;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff !important;
+    background-color: #2b7bf6;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+}*/
+
+/* Smooth fade-in animation for content */
+/*.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}*/

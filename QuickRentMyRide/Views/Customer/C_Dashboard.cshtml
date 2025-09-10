@@ -1,110 +1,105 @@
 ﻿@{
     ViewBag.Title = "CustomerDashboard";
-    Layout = "~/Views/Shared/_CustomerLayout.cshtml"; // Use your customer layout
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <div class="container mt-5">
-    <h2>Welcome, @Context.Session.GetString("Username")!</h2>
-    <p>This is your customer dashboard. From here, you can book cars, view your bookings, and manage your profile.</p>
+    <h2 class="mb-3">Welcome, @Context.Session.GetString("Username")!</h2>
+    <p class="text-muted">From here, you can check availability, view bookings, manage your profile, and book cars.</p>
 </div>
 
-<div id="carouselExampleDark" class="carousel carousel-dark slide">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
+<!-- Carousel Banner -->
+<div id="carouselExampleDark" class="carousel slide mb-5" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active" data-bs-interval="10000">
-            <img src="~/images/Banner1.jpg" class="d-block carousel-banner" alt="Banner1">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
-            </div>
+        <div class="carousel-item active" data-bs-interval="3000">
+            <img src="~/images/Banner1.jpg" class="d-block w-100" style="height:400px; object-fit:cover;" alt="Banner1">
         </div>
-        <div class="carousel-item" data-bs-interval="2000">
-            <img src="~/images/Banner4.jpg" class="d-block carousel-banner" alt="Banner2">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Second slide label</h5>
-                <p>Some representative placeholder content for the second slide.</p>
-            </div>
+        <div class="carousel-item" data-bs-interval="3000">
+            <img src="~/images/Banner4.jpg" class="d-block w-100" style="height:400px; object-fit:cover;" alt="Banner2">
         </div>
         <div class="carousel-item">
-            <img src="~/images/Banner5.jpg" class="d-block carousel-banner" alt="Banner3">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Third slide label</h5>
-                <p>Some representative placeholder content for the third slide.</p>
-            </div>
+            <img src="~/images/Banner5.jpg" class="d-block w-100" style="height:400px; object-fit:cover;" alt="Banner3">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+        <span class="carousel-control-prev-icon"></span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
+        <span class="carousel-control-next-icon"></span>
     </button>
 </div>
 
-<h3 class="p-5"> Click Booking</h3>
+<!-- Quick Action Cards -->
+<div class="container mb-5">
+    <div class="row g-4">
+        <!-- Check Availability -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 text-center p-4">
+                <i class="bi bi-calendar-check text-primary fs-1 mb-3"></i>
+                <h5 class="card-title fw-bold">Check Availability</h5>
+                <p class="text-muted">See which cars are available for your dates</p>
+                <a asp-controller="Booking" asp-action="CheckAvailability" class="btn btn-primary w-100 mt-auto">Search Cars</a>
+            </div>
+        </div>
 
-<div class="d-flex justify-content-between">
-    <div class="card" style="width: 18rem;">
-        <img src="~/images/89de2be91be544eeb77e28bd5113d897.webp" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Casual Outdoor</h5>
-            <p class="text-primary">LKR 1,250.00</p>
-            <a asp-controller="Booking" asp-action="Create" asp-route-carId="1" class="btn btn-primary">BOOKING</a>
+        <!-- My Bookings -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 text-center p-4">
+                <i class="bi bi-journal-check text-success fs-1 mb-3"></i>
+                <h5 class="card-title fw-bold">My Bookings</h5>
+                <p class="text-muted">View your booking history</p>
+                <a asp-controller="Booking" asp-action="MyBookings" class="btn btn-success w-100 mt-auto">View Bookings</a>
+            </div>
+        </div>
 
-
+        <!-- Profile -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 text-center p-4">
+                <i class="bi bi-person-circle text-warning fs-1 mb-3"></i>
+                <h5 class="card-title fw-bold">Profile</h5>
+                <p class="text-muted">Edit your personal details</p>
+                <a asp-controller="Customer" asp-action="Profile" class="btn btn-warning w-100 mt-auto">Edit Profile</a>
+            </div>
         </div>
     </div>
-
-    <div class="card" style="width: 18rem;">
-        <img src="~/images/OIP (1).webp" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">basketball</h5>
-            <p class="text-primary">LKR 1,750.00</p>
-            <a href="#" class="btn btn-primary">BOOKING</a>
-        </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-        <img src="~/images/OIP (2).webp" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">CricketBall</h5>
-            <p class="text-primary">LKR 250.00</p>
-            <a href="#" class="btn btn-primary">BOOKING</a>
-        </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-        <img src="~/images/OIP.webp" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Sneakers</h5>
-            <p class="text-primary">LKR 3,500.00</p>
-            <a href="#" class="btn btn-primary">BOOKING</a>
-        </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-        <img src="~/images/C2.webp" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Tennis Ball</h5>
-            <p class="text-primary">LKR 900.00</p>
-            <a href="#" class="btn btn-primary">BOOKING</a>
-        </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-        <img src="~/images/C1.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Casual Outdoor</h5>
-            <p class="text-primary">LKR 850.00</p>
-            <a href="#" class="btn btn-primary">BOOKING</a>
-        </div>
-    </div>
-
 </div>
 
+<!-- Available Cars -->
+<div class="container">
+    <h3 class="mb-4">Available Cars / Products</h3>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <img src="~/images/89de2be91be544eeb77e28bd5113d897.webp" class="card-img-top" alt="Casual Outdoor" style="height:200px; object-fit:cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Casual Outdoor</h5>
+                    <p class="text-primary fw-bold">LKR 1,250.00</p>
+                    <a asp-controller="Booking" asp-action="Create" asp-route-carId="1" class="btn btn-primary w-100 mt-auto">BOOK NOW</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <img src="~/images/OIP (1).webp" class="card-img-top" alt="Basketball" style="height:200px; object-fit:cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Basketball</h5>
+                    <p class="text-primary fw-bold">LKR 1,750.00</p>
+                    <a href="#" class="btn btn-primary w-100 mt-auto">BOOK NOW</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <img src="~/images/OIP (2).webp" class="card-img-top" alt="Cricket Ball" style="height:200px; object-fit:cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Cricket Ball</h5>
+                    <p class="text-primary fw-bold">LKR 250.00</p>
+                    <a href="#" class="btn btn-primary w-100 mt-auto">BOOK NOW</a>
+                </div>
+            </div>
+        </div>
+        <!-- Add more cars following the same structure -->
+    </div>
+</div>
