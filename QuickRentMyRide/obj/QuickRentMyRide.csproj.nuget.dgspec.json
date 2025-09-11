@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "N:\\Car PRO\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
+    "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
   },
   "projects": {
-    "N:\\Car PRO\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {
+    "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "N:\\Car PRO\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "projectName": "QuickRentMyRide",
-        "projectPath": "N:\\Car PRO\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectPath": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "N:\\Car PRO\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
+        "outputPath": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

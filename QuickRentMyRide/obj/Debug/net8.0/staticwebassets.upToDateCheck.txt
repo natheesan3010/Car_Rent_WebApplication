@@ -1,4 +1,5 @@
 wwwroot\css\login.css
+wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\89de2be91be544eeb77e28bd5113d897.webp
 wwwroot\images\about.png
@@ -76,4 +77,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\css\site.css
