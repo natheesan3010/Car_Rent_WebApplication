@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -19,39 +20,45 @@ namespace QuickRentMyRide.Controllers
             _context = context;
         }
 
-        // Customer Dashboard
+        // ---------------- Dashboard ----------------
         public IActionResult C_Dashboard()
         {
-            ViewData["ActivePage"] = "Dashboard"; // Active page set
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
+
+            ViewData["ActivePage"] = "Dashboard";
             return View();
         }
 
-        // GET: Profile
+        // ---------------- Profile (GET) ----------------
         public async Task<IActionResult> Profile()
         {
-            ViewData["ActivePage"] = "Profile"; // Active page set
-
             var username = HttpContext.Session.GetString("Username");
             if (string.IsNullOrEmpty(username))
                 return RedirectToAction("Login", "Account");
 
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
             if (customer == null) return NotFound();
+
+            ViewData["ActivePage"] = "Profile";
             return View(customer);
         }
 
-        // POST: Update Profile
+        // ---------------- Profile (POST Update) ----------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProfile(Customer model, IFormFile photo)
         {
-            ViewData["ActivePage"] = "Profile"; // Active page set
-
-            if (!ModelState.IsValid)
-                return View("Profile", model);
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
 
             var customer = await _context.Customers.FindAsync(model.CustomerID);
             if (customer == null) return NotFound();
+
+            if (!ModelState.IsValid)
+                return View("Profile", model);
 
             customer.FirstName = model.FirstName;
             customer.LastName = model.LastName;
@@ -61,17 +68,16 @@ namespace QuickRentMyRide.Controllers
 
             if (photo != null)
             {
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                if (!Directory.Exists(imagePath))
-                    Directory.CreateDirectory(imagePath);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
-                var filePath = Path.Combine(imagePath, fileName);
-
+                var filePath = Path.Combine(path, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await photo.CopyToAsync(stream);
                 }
+
                 customer.LicensePhoto = "/images/" + fileName;
             }
 
@@ -82,11 +88,86 @@ namespace QuickRentMyRide.Controllers
             return RedirectToAction("Profile");
         }
 
-        // --- Availability Search ---
+        // ---------------- Booking (GET) ----------------
+        [HttpGet]
+        public IActionResult Booking()
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
+
+            ViewBag.AvailableCars = _context.Cars.Where(c => c.IsAvailable).ToList();
+            return View();
+        }
+
+        // ---------------- Booking (POST) ----------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Booking(Customer model, IFormFile LicensePhotoFile, int CarID, DateTime StartDate, DateTime EndDate)
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AvailableCars = _context.Cars.Where(c => c.IsAvailable).ToList();
+                return View(model);
+            }
+
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == model.Email);
+            if (customer == null)
+            {
+                customer = model;
+
+                if (LicensePhotoFile != null)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+                    var fileName = Guid.NewGuid() + Path.GetExtension(LicensePhotoFile.FileName);
+                    var filePath = Path.Combine(path, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await LicensePhotoFile.CopyToAsync(stream);
+                    }
+                    customer.LicensePhoto = "/images/" + fileName;
+                }
+
+                if (string.IsNullOrEmpty(customer.Username))
+                    customer.Username = customer.Email.Split('@')[0];
+
+                _context.Customers.Add(customer);
+                await _context.SaveChangesAsync();
+            }
+
+            var booking = new Booking
+            {
+                CustomerID = customer.CustomerID,
+                CarID = CarID,
+                StartDate = StartDate,
+                EndDate = EndDate
+            };
+
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+
+            HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
+            HttpContext.Session.SetString("Username", customer.Username);
+
+            TempData["SuccessMessage"] = "Booking confirmed!";
+            return RedirectToAction("BookingConfirmation", new { id = booking.BookingID });
+        }
+
+        // ---------------- Availability Search ----------------
         [HttpGet]
         public async Task<IActionResult> CheckAvailability(DateTime? startDate, DateTime? endDate)
         {
-            ViewData["ActivePage"] = "Availability"; // Active page set
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
+
+            ViewData["ActivePage"] = "Availability";
 
             ViewBag.StartDate = startDate;
             ViewBag.EndDate = endDate;
@@ -111,6 +192,22 @@ namespace QuickRentMyRide.Controllers
 
             ViewBag.ShowResults = true;
             return View("AvailabilitySearch", availableCars);
+        }
+
+        // ---------------- Booking Confirmation ----------------
+        public async Task<IActionResult> BookingConfirmation(int id)
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "Account");
+
+            var booking = await _context.Bookings
+                .Include(b => b.Car)
+                .Include(b => b.Customer)
+                .FirstOrDefaultAsync(b => b.BookingID == id);
+
+            if (booking == null) return NotFound();
+            return View(booking);
         }
     }
 }

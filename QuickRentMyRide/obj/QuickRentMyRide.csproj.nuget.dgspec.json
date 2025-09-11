@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
+    "C:\\Users\\UT010842\\Desktop\\New folder\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {
+    "C:\\Users\\UT010842\\Desktop\\New folder\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectUniqueName": "C:\\Users\\UT010842\\Desktop\\New folder\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "projectName": "QuickRentMyRide",
-        "projectPath": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (3)\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
+        "projectPath": "C:\\Users\\UT010842\\Desktop\\New folder\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "packagesPath": "C:\\Users\\UT010842\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\UT010842\\Desktop\\New folder\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\UT010842\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -88,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

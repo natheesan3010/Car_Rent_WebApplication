@@ -2087,3 +2087,7 @@ C:\Users\HP\OneDrive\Desktop\New folder (3)\Car_Rent_WebApplication\QuickRentMyR
 C:\Users\HP\OneDrive\Desktop\New folder (3)\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\QuickRen.94319BEE.Up2Date
 C:\Users\HP\OneDrive\Desktop\New folder (3)\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\QuickRentMyRide.genruntimeconfig.cache
 C:\Users\HP\OneDrive\Desktop\New folder (3)\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\ref\QuickRentMyRide.dll
+C:\Users\UT010842\Desktop\New folder\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\QuickRentMyRide.staticwebassets.endpoints.json
+C:\Users\UT010842\Desktop\New folder\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\UT010842\Desktop\New folder\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\staticwebassets\msbuild.QuickRentMyRide.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\UT010842\Desktop\New folder\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

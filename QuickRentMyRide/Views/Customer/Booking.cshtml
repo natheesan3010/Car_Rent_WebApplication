@@ -1,0 +1,81 @@
+﻿@model QuickRentMyRide.Models.Customer
+
+@{
+    ViewBag.Title = "Book a Car";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold text-primary">Book a Car</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center shadow-sm rounded-3">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg p-4 rounded-4 border-0">
+                <form asp-action="Booking" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="CustomerID" />
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="FirstName" class="form-label fw-semibold">First Name</label>
+                            <input asp-for="FirstName" class="form-control form-control-lg" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LastName" class="form-label fw-semibold">Last Name</label>
+                            <input asp-for="LastName" class="form-control form-control-lg" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                        <input asp-for="Email" class="form-control form-control-lg" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label fw-semibold">Phone Number</label>
+                        <input asp-for="PhoneNumber" class="form-control form-control-lg" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label fw-semibold">Address</label>
+                        <textarea asp-for="Address" class="form-control form-control-lg" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">License Photo</label>
+                        <input type="file" name="LicensePhotoFile" class="form-control form-control-lg" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Select Car</label>
+                        <select name="CarID" class="form-select form-select-lg">
+                            @foreach (var car in ViewBag.AvailableCars as List<QuickRentMyRide.Models.Car>)
+                            {
+                                <option value="@car.CarID">@car.CarBrand - @car.NumberPlate</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Start Date</label>
+                            <input type="date" name="StartDate" class="form-control form-control-lg" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">End Date</label>
+                            <input type="date" name="EndDate" class="form-control form-control-lg" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 btn-lg fw-bold">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

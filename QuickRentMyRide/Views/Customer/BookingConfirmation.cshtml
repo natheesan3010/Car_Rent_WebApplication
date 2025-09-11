@@ -1,0 +1,8 @@
+﻿@model QuickRentMyRide.Models.Booking
+
+<h2>Booking Confirmed!</h2>
+
+<p>Customer: @Model.Customer.FirstName @Model.Customer.LastName</p>
+<p>Car: @Model.Car.CarBrand - @Model.Car.NumberPlate</p>
+<p>Start Date: @Model.StartDate.ToShortDateString()</p>
+<p>End Date: @Model.EndDate.ToShortDateString()</p>
