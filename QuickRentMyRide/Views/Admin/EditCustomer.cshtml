@@ -1,0 +1,73 @@
+﻿@model QuickRentMyRide.Models.Customer
+
+@{
+    ViewBag.Title = "Edit Customer";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 text-uppercase fw-bold">Edit Customer</h2>
+
+            <form asp-action="EditCustomer" asp-route-id="@Model.CustomerID" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">License Photo</label>
+                    <input type="file" name="LicensePhotoFile" class="form-control" onchange="previewImage(event)" />
+                    <img id="previewImg" src="@Model.LicensePhoto" class="img-thumbnail mt-2" style="width:120px;" />
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="ManageCustomers" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Update Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                document.getElementById('previewImg').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}

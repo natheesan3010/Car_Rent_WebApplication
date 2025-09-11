@@ -21,17 +21,31 @@ namespace QuickRentMyRide.Controllers
         }
 
         // ---------------- Dashboard ----------------
-        public IActionResult C_Dashboard()
+        public async Task<IActionResult> C_Dashboard()
         {
             var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "Account");
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
 
+            if (string.IsNullOrEmpty(username))
+            {
+                TempData["ErrorMessage"] = "Session expired, please login again!";
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Booking History
+            var bookings = await _context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.CustomerID == customerId)
+                .OrderByDescending(b => b.StartDate)
+                .ToListAsync();
+
+            ViewBag.MyBookings = bookings;
             ViewData["ActivePage"] = "Dashboard";
             return View();
         }
 
         // ---------------- Profile (GET) ----------------
+        [HttpGet]
         public async Task<IActionResult> Profile()
         {
             var username = HttpContext.Session.GetString("Username");
@@ -57,6 +71,15 @@ namespace QuickRentMyRide.Controllers
             var customer = await _context.Customers.FindAsync(model.CustomerID);
             if (customer == null) return NotFound();
 
+            // Email duplicate check
+            var emailExists = await _context.Customers
+                .AnyAsync(c => c.Email == model.Email && c.CustomerID != model.CustomerID);
+            if (emailExists)
+            {
+                ModelState.AddModelError("Email", "This email is already in use!");
+                return View("Profile", model);
+            }
+
             if (!ModelState.IsValid)
                 return View("Profile", model);
 
@@ -66,8 +89,18 @@ namespace QuickRentMyRide.Controllers
             customer.PhoneNumber = model.PhoneNumber;
             customer.Address = model.Address;
 
+            // Photo upload + old delete
             if (photo != null)
             {
+                if (!string.IsNullOrEmpty(customer.LicensePhoto))
+                {
+                    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", customer.LicensePhoto.TrimStart('/'));
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }
+
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
@@ -115,6 +148,18 @@ namespace QuickRentMyRide.Controllers
                 return View(model);
             }
 
+            // Duplicate booking check
+            var existingBooking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.CarID == CarID &&
+                                          ((StartDate >= b.StartDate && StartDate <= b.EndDate) ||
+                                           (EndDate >= b.StartDate && EndDate <= b.EndDate)));
+
+            if (existingBooking != null)
+            {
+                TempData["ErrorMessage"] = "This car is already booked in the selected period!";
+                return RedirectToAction("Booking");
+            }
+
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == model.Email);
             if (customer == null)
             {
@@ -151,6 +196,15 @@ namespace QuickRentMyRide.Controllers
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
+
+            // Car availability update
+            var car = await _context.Cars.FindAsync(CarID);
+            if (car != null)
+            {
+                car.IsAvailable = false;
+                _context.Cars.Update(car);
+                await _context.SaveChangesAsync();
+            }
 
             HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
             HttpContext.Session.SetString("Username", customer.Username);

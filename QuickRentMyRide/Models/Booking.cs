@@ -26,5 +26,6 @@ namespace QuickRentMyRide.Models
         public decimal TotalPrice { get; set; }
 
         public virtual Car Car { get; set; }
+        public string Status { get; set; } = "Pending";
     }
 }

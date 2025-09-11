@@ -1,0 +1,47 @@
+﻿@model IEnumerable<QuickRentMyRide.Models.Car>
+
+@{
+    ViewBag.Title = "Manage Cars";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-5">
+
+    <h2 class="text-center mb-4 text-uppercase fw-bold">Manage Cars</h2>
+
+    <div class="text-end mb-3">
+        <a asp-action="AddCar" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle me-2"></i> Add New Car
+        </a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-striped align-middle mb-0 bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Model</th>
+                    <th>Number Plate</th>
+                    <th>Rent/Day</th>
+                    <th>Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var car in Model)
+                {
+                    <tr>
+                        <td>@car.CarID</td>
+                        <td>@car.CarModel</td>
+                        <td>@car.NumberPlate</td>
+                        <td>@car.RentPerDay.ToString("N0")</td>
+                        <td>
+                            <span class="badge @(car.IsAvailable ? "bg-success" : "bg-danger")">
+                                @(car.IsAvailable ? "Yes" : "No")
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

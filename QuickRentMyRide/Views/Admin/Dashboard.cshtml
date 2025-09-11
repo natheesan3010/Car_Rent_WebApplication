@@ -3,70 +3,120 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="container my-5">
 
+    <!-- Title -->
+    <h2 class="text-center text-uppercase fw-bold mb-4">Admin Dashboard</h2>
+    <hr />
 
-<h2 class="mt-4 mb-3 text-center">ADMIN DASHBOARD</h2>
-<hr />
-
-<div class="container text-center mt-5">
-    <h4>
-    <p class="text-muted"> <b>Manage customers and cars from here. Use the buttons above to add new entries. </b> </p>
-    </h4>
-    <div id="carouselExampleDark" class="carousel carousel-dark slide">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="~/images/Banner1.jpg" class="d-block carousel-banner" alt="Banner1">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
+    <!-- Quick Stats Cards -->
+    <div class="row text-center mb-5">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-primary text-white h-100">
+                <div class="card-body">
+                    <i class="bi bi-people fs-1 mb-3"></i>
+                    <h5 class="card-title">Customers</h5>
+                    <h3 class="fw-bold">@ViewBag.TotalCustomers</h3>
                 </div>
             </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="~/images/Banner4.jpg" class="d-block carousel-banner" alt="Banner2">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-success text-white h-100">
+                <div class="card-body">
+                    <i class="bi bi-car-front fs-1 mb-3"></i>
+                    <h5 class="card-title">Cars</h5>
+                    <h3 class="fw-bold">@ViewBag.TotalCars</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-warning text-dark h-100">
+                <div class="card-body">
+                    <i class="bi bi-journal-text fs-1 mb-3"></i>
+                    <h5 class="card-title">Bookings</h5>
+                    <h3 class="fw-bold">@ViewBag.TotalBookings</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 bg-danger text-white h-100">
+                <div class="card-body">
+                    <i class="bi bi-clock-history fs-1 mb-3"></i>
+                    <h5 class="card-title">Pending</h5>
+                    <h3 class="fw-bold">@ViewBag.PendingBookings</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="row text-center mb-5">
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Admin" asp-action="ManageCustomers" class="btn btn-outline-primary btn-lg w-100 shadow-sm">
+                <i class="bi bi-people-fill me-2"></i> Manage Customers
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Admin" asp-action="ManageCars" class="btn btn-outline-success btn-lg w-100 shadow-sm">
+                <i class="bi bi-car-front-fill me-2"></i> Manage Cars
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Admin" asp-action="ManageBookings" class="btn btn-outline-warning btn-lg w-100 shadow-sm">
+                <i class="bi bi-journal-check me-2"></i> Manage Bookings
+            </a>
+        </div>
+    </div>
+
+    <!-- Carousel -->
+    <div id="adminCarousel" class="carousel slide mb-5 shadow rounded" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#adminCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#adminCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#adminCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner rounded">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <img src="~/images/Banner1.jpg" class="d-block w-100" alt="Banner1">
+                <div class="carousel-caption bg-dark bg-opacity-50 rounded p-2">
+                    <h5>Customer First</h5>
+                    <p>Reliable rides with top quality service.</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="~/images/Banner4.jpg" class="d-block w-100" alt="Banner2">
+                <div class="carousel-caption bg-dark bg-opacity-50 rounded p-2">
+                    <h5>Wide Range</h5>
+                    <p>Economy to luxury vehicles available.</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="~/images/Banner5.jpg" class="d-block carousel-banner" alt="Banner3">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
+                <img src="~/images/Banner5.jpg" class="d-block w-100" alt="Banner3">
+                <div class="carousel-caption bg-dark bg-opacity-50 rounded p-2">
+                    <h5>24/7 Support</h5>
+                    <p>Anytime, anywhere, we are here for you.</p>
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+        <button class="carousel-control-prev" type="button" data-bs-target="#adminCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+        <button class="carousel-control-next" type="button" data-bs-target="#adminCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
         </button>
     </div>
 
-    <!-- About Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
+    <!-- About Section -->
+    <div class="bg-light p-5 rounded shadow-sm text-center">
+        <h1 class="display-6 fw-bold text-uppercase mb-4">
+            Welcome To <span class="text-primary">Quick Rent My Ride</span>
+        </h1>
+        <img class="w-75 mb-4 rounded shadow-sm" src="~/images/about.png" alt="About">
+        <p class="lead text-muted">
+            QuickRentMyRide offers affordable and efficient vehicle rental services across Sri Lanka.
+            Whether you're a tourist, a business traveler, or a local resident,
+            our wide range of vehicles is tailored to meet your needs.
+        </p>
+    </div>
 
-            <h1 class="display-4 text-uppercase text-center mb-5">Welcome To <br> <span class="text-primary">QUICK RENT MY RIDE</span></h1>
-            <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <img class="w-75 mb-4" src="~/images/about.png" alt="images">
-                    <p>QuickRentMyRide offers affordable and efficient vehicle rental services across Sri Lanka. Whether you're a tourist, a business traveler, or a local resident, our wide range of vehicles is tailored to meet your needs.</p>
-                </div>
-            </div>
-
-
-
-        </div>
-        <!-- About End -->
 </div>
-
-   

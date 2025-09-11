@@ -1,7 +1,10 @@
 wwwroot\css\login.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\763cabf0-2c7a-41cc-91af-0ef6bf75630f.png
+wwwroot\images\76771117-228d-4142-8301-ce354b777d54.png
 wwwroot\images\89de2be91be544eeb77e28bd5113d897.webp
+wwwroot\images\92968e31-d933-4444-aa18-8e4cd6f06941.jpg
 wwwroot\images\about.png
 wwwroot\images\Banner1.jpg
 wwwroot\images\Banner2.webp
@@ -12,6 +15,7 @@ wwwroot\images\C1.jpg
 wwwroot\images\C2.webp
 wwwroot\images\car-cars-lamborghini-aventador-63764.jpg
 wwwroot\images\chill for a moment _wallpaper _ipadwallpaper _phonewallpaper _chillwithtiktok _doclamoingay777(JPEG-5).jpeg.jpg
+wwwroot\images\e9b1c96e-5f73-4cfb-a49b-238a630bec92.jpg
 wwwroot\images\Logo.jpg
 wwwroot\images\OIP (1).webp
 wwwroot\images\OIP (2).webp
@@ -19,16 +23,9 @@ wwwroot\images\OIP.webp
 wwwroot\images\Screenshot 2025-09-03 093222.png
 wwwroot\images\Screenshot 2025-09-07 123733.png
 wwwroot\images\Screenshot 2025-09-07 131010.png
+wwwroot\images\Screenshot 2025-09-11 092716.png
 wwwroot\images\Thumbs.db
 wwwroot\js\site.js
-wwwroot\lib\bootstrap\dist\css\bootstrap.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -53,6 +50,14 @@ wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
@@ -66,15 +71,15 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 wwwroot\lib\bootstrap\LICENSE
-wwwroot\lib\jquery\dist\jquery.js
-wwwroot\lib\jquery\dist\jquery.min.js
-wwwroot\lib\jquery\dist\jquery.min.map
-wwwroot\lib\jquery\LICENSE.txt
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
 wwwroot\lib\jquery-validation\dist\additional-methods.js
 wwwroot\lib\jquery-validation\dist\additional-methods.min.js
 wwwroot\lib\jquery-validation\dist\jquery.validate.js
 wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
 wwwroot\lib\jquery-validation\LICENSE.md
-wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
-wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
-wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\jquery\LICENSE.txt

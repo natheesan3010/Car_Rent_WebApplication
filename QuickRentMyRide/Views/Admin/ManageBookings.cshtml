@@ -1,0 +1,57 @@
+﻿@model IEnumerable<QuickRentMyRide.Models.Booking>
+
+@{
+    ViewBag.Title = "Manage Bookings";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-5">
+
+    <h2 class="text-center mb-4 text-uppercase fw-bold">Manage Bookings</h2>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-striped align-middle mb-0 bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Car</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr>
+                        <td>@b.BookingID</td>
+                        <td>@b.Customer.FirstName @b.Customer.LastName</td>
+                        <td>@b.Car.CarModel</td>
+                        <td>@b.StartDate.ToShortDateString()</td>
+                        <td>@b.EndDate.ToShortDateString()</td>
+                        <td>
+                            <span class="badge @(b.Status == "Pending" ? "bg-warning" : b.Status == "Approved" ? "bg-success" : "bg-danger")">
+                                @b.Status
+                            </span>
+                        </td>
+                        <td>
+                            @if (b.Status == "Pending")
+                            {
+                                <form asp-action="ApproveBooking" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@b.BookingID" />
+                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                </form>
+                                <form asp-action="RejectBooking" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@b.BookingID" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
