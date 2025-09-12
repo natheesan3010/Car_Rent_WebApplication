@@ -109,6 +109,18 @@ body {
     height: 500px; /* எல்லா slide களுக்கும் ஒரே height */
 }
 
+.team img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.team img:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+}
+
+section.bg-dark {
+    background: linear-gradient(90deg, #0d0d0d, #1a1a1a);
+}
+
 /* Sticky Navbar */
 /*.sticky-top {
     position: sticky;
