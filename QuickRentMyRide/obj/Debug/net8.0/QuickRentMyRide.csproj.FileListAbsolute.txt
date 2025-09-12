@@ -2446,3 +2446,5 @@ Z:\Car_Project\NR\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\refin
 Z:\Car_Project\NR\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\QuickRentMyRide.pdb
 Z:\Car_Project\NR\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\QuickRentMyRide.genruntimeconfig.cache
 Z:\Car_Project\NR\Car_Rent_WebApplication\QuickRentMyRide\obj\Debug\net8.0\ref\QuickRentMyRide.dll
+Z:\Car_Project\NR\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\CloudinaryDotNet.dll
+Z:\Car_Project\NR\Car_Rent_WebApplication\QuickRentMyRide\bin\Debug\net8.0\Newtonsoft.Json.dll

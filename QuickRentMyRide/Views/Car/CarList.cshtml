@@ -13,7 +13,7 @@
         </form>
     </div>
 
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>#</th>
@@ -42,16 +42,27 @@
                         <td>@car.CarBrand</td>
                         <td>@car.CarModel</td>
                         <td>Rs. @car.RentPerDay</td>
-                        <td>@(car.IsAvailable ? "Yes" : "No")</td>
                         <td>
-                            @if (!string.IsNullOrEmpty(car.CarImage))
+                            @if (car.IsAvailable)
                             {
-                                <img src="@Url.Content("~/images/" + car.CarImage)" width="80" height="50" class="rounded" />
+                                <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">No</span>
                             }
                         </td>
                         <td>
-                            <a asp-action="EditCar" asp-route-id="@car.CarID" class="btn btn-sm btn-warning">Edit</a>
-                            <a asp-action="DeleteCar" asp-route-id="@car.CarID" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                            @if (!string.IsNullOrEmpty(car.CarImage))
+                            {
+                                <img src="@car.CarImage" width="100" height="60" class="rounded border" alt="Car Image" />
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="EditCar" asp-route-id="@car.CarID" class="btn btn-sm btn-warning me-1">Edit</a>
+                            <form asp-action="DeleteCar" asp-route-id="@car.CarID" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     index++;

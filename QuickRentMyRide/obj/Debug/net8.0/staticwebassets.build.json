@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RWOqG8iU28flbakjCONAjjZmXW8GBj1ByocVaPpY8uw=",
+  "Hash": "PJ294gAubYuDMjD7HhUJTBldRaJGSsiWTxNxk0Iqcas=",
   "Source": "QuickRentMyRide",
   "BasePath": "_content/QuickRentMyRide",
   "Mode": "Default",
@@ -110,6 +110,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\wwwroot\\images\\49647038-24bc-4f3e-b36d-03fa8bb955c0.jpg",
+      "SourceId": "QuickRentMyRide",
+      "SourceType": "Discovered",
+      "ContentRoot": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\wwwroot\\",
+      "BasePath": "_content/QuickRentMyRide",
+      "RelativePath": "images/49647038-24bc-4f3e-b36d-03fa8bb955c0.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\49647038-24bc-4f3e-b36d-03fa8bb955c0.jpg"
     },
     {
       "Identity": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\wwwroot\\images\\89de2be91be544eeb77e28bd5113d897.webp",

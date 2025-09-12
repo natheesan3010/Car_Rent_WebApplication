@@ -7,6 +7,26 @@
       "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|z:\\car_project\\nr\\car_rent_webapplication\\quickrentmyride\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|z:\\car_project\\nr\\car_rent_webapplication\\quickrentmyride\\views\\admin\\addcar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\views\\admin\\addcar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|z:\\car_project\\nr\\car_rent_webapplication\\quickrentmyride\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|z:\\car_project\\nr\\car_rent_webapplication\\quickrentmyride\\views\\car\\carlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\views\\car\\carlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|z:\\car_project\\nr\\car_rent_webapplication\\quickrentmyride\\models\\cloudinarysettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\models\\cloudinarysettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|z:\\car_project\\nr\\car_rent_webapplication\\quickrentmyride\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DDA9D2A9-5DC6-4EDE-8073-50F9D6DBA739}|QuickRentMyRide\\QuickRentMyRide.csproj|solutionrelative:quickrentmyride\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -58,8 +78,44 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CarController.cs",
+              "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Controllers\\CarController.cs",
+              "RelativeDocumentMoniker": "QuickRentMyRide\\Controllers\\CarController.cs",
+              "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Controllers\\CarController.cs",
+              "RelativeToolTip": "QuickRentMyRide\\Controllers\\CarController.cs",
+              "ViewState": "AQIAAGoAAAAAAAAAAAAcwI8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-12T04:48:23.54Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CloudinarySettings.cs",
+              "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Models\\CloudinarySettings.cs",
+              "RelativeDocumentMoniker": "QuickRentMyRide\\Models\\CloudinarySettings.cs",
+              "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Models\\CloudinarySettings.cs",
+              "RelativeToolTip": "QuickRentMyRide\\Models\\CloudinarySettings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-12T04:47:43.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Program.cs",
+              "RelativeDocumentMoniker": "QuickRentMyRide\\Program.cs",
+              "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Program.cs",
+              "RelativeToolTip": "QuickRentMyRide\\Program.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAoAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-12T04:47:01.56Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -68,27 +124,50 @@
               "RelativeDocumentMoniker": "QuickRentMyRide\\appsettings.json",
               "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\appsettings.json",
               "RelativeToolTip": "QuickRentMyRide\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-09-12T04:03:50.572Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
+              "Title": "CarList.cshtml",
+              "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Car\\CarList.cshtml",
+              "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Car\\CarList.cshtml",
+              "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Car\\CarList.cshtml",
+              "RelativeToolTip": "QuickRentMyRide\\Views\\Car\\CarList.cshtml",
+              "ViewState": "AQIAADEAAAAAAAAAAAAiwFgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-12T04:51:37.601Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AddCar.cshtml",
+              "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Admin\\AddCar.cshtml",
+              "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Admin\\AddCar.cshtml",
+              "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Admin\\AddCar.cshtml",
+              "RelativeToolTip": "QuickRentMyRide\\Views\\Admin\\AddCar.cshtml",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-12T04:53:22.08Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "site.css",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "QuickRentMyRide\\wwwroot\\css\\site.css",
               "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\wwwroot\\css\\site.css",
               "RelativeToolTip": "QuickRentMyRide\\wwwroot\\css\\site.css",
-              "ViewState": "AQIAAGAAAAAAAAAAAAAAAHsAAAATAAAA",
+              "ViewState": "AQIAAF0AAAAAAAAAAIBJwHsAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-09-12T03:39:46.116Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-12T03:39:46.116Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Contact.cshtml",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Home\\Contact.cshtml",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Home\\Contact.cshtml",
@@ -96,12 +175,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Views\\Home\\Contact.cshtml",
               "ViewState": "AQIAAGEAAAAAAAAAAAAwwIcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-12T03:30:43.682Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-12T03:30:43.682Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "About.cshtml",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Home\\About.cshtml",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Home\\About.cshtml",
@@ -109,12 +187,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Views\\Home\\About.cshtml",
               "ViewState": "AQIAAEcAAAAAAAAAAAAcwGEAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-12T03:30:02.181Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-12T03:30:02.181Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "EditCar.cshtml",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Admin\\EditCar.cshtml",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Admin\\EditCar.cshtml",
@@ -122,12 +199,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Views\\Admin\\EditCar.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-11T15:01:20.682Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T15:01:20.682Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "EditCustomer.cshtml",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Admin\\EditCustomer.cshtml",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Admin\\EditCustomer.cshtml",
@@ -135,25 +211,23 @@
               "RelativeToolTip": "QuickRentMyRide\\Views\\Admin\\EditCustomer.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-11T14:58:32.799Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T14:58:32.799Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "ManageCars.cshtml",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Admin\\ManageCars.cshtml",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Views\\Admin\\ManageCars.cshtml",
               "ToolTip": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Views\\Admin\\ManageCars.cshtml",
               "RelativeToolTip": "QuickRentMyRide\\Views\\Admin\\ManageCars.cshtml",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-11T14:47:06.453Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T14:47:06.453Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "AdminController.cs",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Controllers\\AdminController.cs",
@@ -161,12 +235,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Controllers\\AdminController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T14:07:39.804Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T14:07:39.804Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "Car.cs",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Models\\Car.cs",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Models\\Car.cs",
@@ -174,12 +247,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Models\\Car.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T14:16:58.86Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T14:16:58.86Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 16,
               "Title": "20250911142949_booking.cs",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Migrations\\20250911142949_booking.cs",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Migrations\\20250911142949_booking.cs",
@@ -187,12 +259,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Migrations\\20250911142949_booking.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T14:29:50.081Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T14:29:50.081Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "Booking.cs",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Models\\Booking.cs",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Models\\Booking.cs",
@@ -200,12 +271,11 @@
               "RelativeToolTip": "QuickRentMyRide\\Models\\Booking.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T14:09:27.829Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T14:09:27.829Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "CustomerController.cs",
               "DocumentMoniker": "Z:\\Car_Project\\NR\\Car_Rent_WebApplication\\QuickRentMyRide\\Controllers\\CustomerController.cs",
               "RelativeDocumentMoniker": "QuickRentMyRide\\Controllers\\CustomerController.cs",
@@ -213,8 +283,7 @@
               "RelativeToolTip": "QuickRentMyRide\\Controllers\\CustomerController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T05:12:33.488Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T05:12:33.488Z"
             }
           ]
         }
