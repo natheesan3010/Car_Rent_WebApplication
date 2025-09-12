@@ -11,3 +11,267 @@
         </div>
     </div>
 </div>
+
+
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container hero-content">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="hero-title">
+                    CONTACT<br>
+                    <span class="text-cynex-blue">CYNEX BLAZER</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Connect with our elite concierge team. We're here 24/7 to provide personalized assistance
+                    and ensure your luxury automotive experience exceeds all expectations.
+                </p>
+                <div class="d-flex flex-column flex-md-row gap-3">
+                    <a href="tel:+15556963999" class="btn btn-cynex-primary btn-lg">
+                        <i class="fas fa-phone"></i> CALL NOW
+                    </a>
+                    <a href="mailto:info@cynexblazer.com" class="btn btn-cynex-secondary btn-lg">
+                        <i class="fas fa-envelope"></i> EMAIL US
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="position-relative">
+                    <img src="~/images/Cynex Blazer.png" alt="CYNEX BLAZER" class="img-fluid" style="max-height: 400px; filter: drop-shadow(0 0 50px rgba(10, 36, 114, 0.8));">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information Section -->
+<section class="py-5" style="background: rgba(0, 0, 0, 0.95);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="cynex-font" style="font-size: 3rem; color: var(--cynex-silver);">
+                GET IN <span class="text-cynex-blue">TOUCH</span>
+            </h2>
+            <p class="lead text-cynex-silver">Multiple ways to reach our elite concierge team</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="cynex-card p-4 text-center h-100">
+                    <div class="mb-4">
+                        <i class="fas fa-phone fa-4x text-cynex-blue"></i>
+                    </div>
+                    <h4 class="cynex-font text-cynex-silver mb-3">PHONE</h4>
+                    <p class="text-cynex-silver mb-2">24/7 Elite Hotline</p>
+                    <a href="tel:+15556963999" class="text-cynex-blue fw-bold text-decoration-none fs-5">
+                        +1 (555) CYNEX-99
+                    </a>
+                    <p class="text-muted mt-2 small">Immediate assistance available</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="cynex-card p-4 text-center h-100">
+                    <div class="mb-4">
+                        <i class="fas fa-envelope fa-4x text-cynex-blue"></i>
+                    </div>
+                    <h4 class="cynex-font text-cynex-silver mb-3">EMAIL</h4>
+                    <p class="text-cynex-silver mb-2">General Inquiries</p>
+                    <a href="mailto:info@cynexblazer.com" class="text-cynex-blue fw-bold text-decoration-none">
+                        info@cynexblazer.com
+                    </a>
+                    <p class="text-muted mt-2 small">Response within 1 hour</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="cynex-card p-4 text-center h-100">
+                    <div class="mb-4">
+                        <i class="fas fa-map-marker-alt fa-4x text-cynex-blue"></i>
+                    </div>
+                    <h4 class="cynex-font text-cynex-silver mb-3">LOCATION</h4>
+                    <p class="text-cynex-silver mb-2">Headquarters</p>
+                    <p class="text-cynex-blue fw-bold">
+                        123 Luxury Drive<br>
+                        Elite City, EC 12345
+                    </p>
+                    <p class="text-muted mt-2 small">Premium showroom & offices</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="cynex-card p-4 text-center h-100">
+                    <div class="mb-4">
+                        <i class="fas fa-clock fa-4x text-cynex-blue"></i>
+                    </div>
+                    <h4 class="cynex-font text-cynex-silver mb-3">HOURS</h4>
+                    <p class="text-cynex-silver mb-2">Concierge Service</p>
+                    <p class="text-cynex-blue fw-bold">
+                        24/7<br>
+                        365 Days
+                    </p>
+                    <p class="text-muted mt-2 small">Always at your service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="cynex-card p-5">
+                    <div class="text-center mb-5">
+                        <h2 class="cynex-font text-cynex-silver mb-3">
+                            <i class="fas fa-paper-plane text-cynex-blue"></i> SEND MESSAGE
+                        </h2>
+                        <p class="text-muted">Tell us how we can assist you with your luxury automotive needs</p>
+                    </div>
+
+                    <form method="post" asp-action="Contact">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="firstName" class="form-label">
+                                    <i class="fas fa-user text-cynex-blue"></i> First Name *
+                                </label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required placeholder="Your first name">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="lastName" class="form-label">
+                                    <i class="fas fa-user text-cynex-blue"></i> Last Name *
+                                </label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" required placeholder="Your last name">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope text-cynex-blue"></i> Email Address *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" required placeholder="your.email@example.com">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="phone" class="form-label">
+                                    <i class="fas fa-phone text-cynex-blue"></i> Phone Number
+                                </label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-tag text-cynex-blue"></i> Subject *
+                            </label>
+                            <select class="form-control" id="subject" name="subject" required>
+                                <option value="">Select inquiry type</option>
+                                <option value="fleet-inquiry">Fleet Inquiry</option>
+                                <option value="booking-assistance">Booking Assistance</option>
+                                <option value="membership">Elite Membership</option>
+                                <option value="corporate">Corporate Services</option>
+                                <option value="partnership">Partnership Opportunities</option>
+                                <option value="feedback">Feedback & Suggestions</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="message" class="form-label">
+                                <i class="fas fa-comment text-cynex-blue"></i> Message *
+                            </label>
+                            <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Tell us how we can assist you with your luxury automotive needs..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                                <label class="form-check-label text-cynex-silver" for="newsletter">
+                                    Subscribe to exclusive offers and luxury automotive updates
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-cynex-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> SEND MESSAGE
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Locations Section -->
+<section class="py-5" style="background: rgba(0, 0, 0, 0.9);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="cynex-font" style="font-size: 3rem; color: var(--cynex-silver);">
+                GLOBAL <span class="text-cynex-blue">LOCATIONS</span>
+            </h2>
+            <p class="lead text-cynex-silver">Premium service centers worldwide</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="cynex-card p-4 h-100">
+                    <h4 class="cynex-font text-cynex-silver mb-3">
+                        <i class="fas fa-map-marker-alt text-cynex-blue"></i> NEW YORK
+                    </h4>
+                    <p class="text-cynex-silver mb-2"><strong>Manhattan Flagship</strong></p>
+                    <p class="text-muted mb-2">123 Luxury Drive, Manhattan, NY 10001</p>
+                    <p class="text-muted mb-2">Phone: +1 (212) 555-0199</p>
+                    <p class="text-muted">Hours: 24/7 Concierge Service</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="cynex-card p-4 h-100">
+                    <h4 class="cynex-font text-cynex-silver mb-3">
+                        <i class="fas fa-map-marker-alt text-cynex-blue"></i> LOS ANGELES
+                    </h4>
+                    <p class="text-cynex-silver mb-2"><strong>Beverly Hills Showroom</strong></p>
+                    <p class="text-muted mb-2">456 Rodeo Drive, Beverly Hills, CA 90210</p>
+                    <p class="text-muted mb-2">Phone: +1 (310) 555-0299</p>
+                    <p class="text-muted">Hours: 24/7 Concierge Service</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="cynex-card p-4 h-100">
+                    <h4 class="cynex-font text-cynex-silver mb-3">
+                        <i class="fas fa-map-marker-alt text-cynex-blue"></i> MIAMI
+                    </h4>
+                    <p class="text-cynex-silver mb-2"><strong>South Beach Elite</strong></p>
+                    <p class="text-muted mb-2">789 Ocean Drive, Miami Beach, FL 33139</p>
+                    <p class="text-muted mb-2">Phone: +1 (305) 555-0399</p>
+                    <p class="text-muted">Hours: 24/7 Concierge Service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5" style="background: #0A2472;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="cynex-font text-white mb-3" style="font-size: 2.5rem;">
+                    READY TO EXPERIENCE LUXURY?
+                </h3>
+                <p class="text-white mb-0 fs-5">Contact our elite concierge team today and discover the CYNEX BLAZER difference.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                <a href="tel:+15556963999" class="btn btn-light btn-lg cynex-font me-3">
+                    <i class="fas fa-phone"></i> CALL NOW
+                </a>
+                <a asp-controller="Customer" asp-action="BrowseCars" class="btn btn-outline-light btn-lg cynex-font">
+                    <i class="fas fa-fire"></i> VIEW FLEET
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
