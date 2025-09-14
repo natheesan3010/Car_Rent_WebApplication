@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Revenue Report";
+}
+
+<div class="container py-5">
+    <h2 class="text-center fw-bold text-uppercase mb-4">Revenue Report</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body text-center">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <i class="bi bi-cash-stack text-success" style="font-size:2.5rem;"></i>
+                    </div>
+                    <h5 class="card-title text-muted">Total Revenue</h5>
+                    <h3 class="fw-bold text-success">
+                        $@string.Format("{0:N2}", ViewBag.TotalRevenue)
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

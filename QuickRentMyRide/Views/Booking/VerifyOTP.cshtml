@@ -1,0 +1,49 @@
+﻿@model QuickRentMyRide.Models.Booking
+
+@{
+    ViewBag.Title = "OTP Verification";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml"; // அல்லது உங்கள் AdminLayout
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">OTP Verification</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-center">Enter the 6-digit OTP sent to your email to confirm your booking.</p>
+
+                    <form asp-action="VerifyOTP" method="post">
+                        <input type="hidden" name="bookingId" value="@Model.BookingID" />
+
+                        <div class="mb-3">
+                            <label for="enteredOTP" class="form-label">OTP Code</label>
+                            <input type="text" id="enteredOTP" name="enteredOTP" class="form-control text-center fs-5" maxlength="6" required />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">Verify OTP</button>
+                        </div>
+                    </form>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger mt-3 text-center">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success mt-3 text-center">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

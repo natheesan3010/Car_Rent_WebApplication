@@ -1,0 +1,20 @@
+﻿@model IEnumerable<QuickRentMyRide.Models.Booking>
+<h2>Booking Dashboard (Admin)</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>BookingID</th><th>Car</th><th>Customer</th><th>Dates</th><th>Total</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.BookingID</td>
+                <td>@b.Car.CarModel</td>
+                <td>@b.CustomerName</td>
+                <td>@b.StartDate.ToShortDateString() - @b.EndDate.ToShortDateString()</td>
+                <td>$@b.TotalPrice</td>
+                <td>@b.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

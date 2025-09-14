@@ -1,0 +1,71 @@
+﻿@model IEnumerable<QuickRentMyRide.Models.Booking>
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold text-uppercase">My Bookings</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            You don't have any bookings yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive shadow rounded">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Car</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var b in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="fw-semibold">@b.Car.CarModel</span>
+                            </td>
+                            <td>@b.StartDate.ToString("dd-MMM-yyyy")</td>
+                            <td>@b.EndDate.ToString("dd-MMM-yyyy")</td>
+                            <td>
+                                @if (b.Status == "Confirmed")
+                                {
+                                    <span class="badge bg-success">Confirmed</span>
+                                }
+                                else if (b.Status == "Cancelled")
+                                {
+                                    <span class="badge bg-danger">Cancelled</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@b.Status</span>
+                                }
+                            </td>
+                            <td>
+                                @if (b.Status == "Confirmed")
+                                {
+                                    <form asp-action="Cancel" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@b.BookingID" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-x-circle"></i> Cancel
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-outline-secondary" disabled>
+                                        <i class="bi bi-slash-circle"></i> N/A
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

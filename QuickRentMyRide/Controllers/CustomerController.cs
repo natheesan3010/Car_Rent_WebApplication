@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,248 +18,113 @@ namespace QuickRentMyRide.Controllers
             _context = context;
         }
 
-        // ---------------- Dashboard ----------------
-        public async Task<IActionResult> C_Dashboard()
+        // Gmail Login Callback
+        public IActionResult GmailLoginCallback(string email)
         {
-            var username = HttpContext.Session.GetString("Username");
-            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("AvailableCars", "Car");
 
-            if (string.IsNullOrEmpty(username))
+            var customer = _context.Customers.FirstOrDefault(c => c.Email == email);
+            if (customer != null)
             {
-                TempData["ErrorMessage"] = "Session expired, please login again!";
-                return RedirectToAction("Login", "Account");
+                HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
+                HttpContext.Session.SetString("Gmail_Address", customer.Email);
+                HttpContext.Session.SetString("Role", "Customer");
+                return RedirectToAction("Dashboard");
             }
 
-            // Booking History
+            TempData["CustomerEmail"] = email;
+            return RedirectToAction("AddDetails");
+        }
+
+        // Add Customer Details (GET)
+        [HttpGet]
+        public IActionResult AddDetails()
+        {
+            var email = TempData["CustomerEmail"]?.ToString();
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("AvailableCars", "Car");
+
+            TempData.Keep("CustomerEmail");
+            return View(new Customer { Email = email });
+        }
+
+        // Add Customer Details (POST)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDetails(Customer model)
+        {
+            TempData.Keep("CustomerEmail");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if (_context.Customers.Any(c => c.Email == model.Email))
+            {
+                ModelState.AddModelError("Email", "Email already exists.");
+                return View(model);
+            }
+
+            if (string.IsNullOrEmpty(model.Username))
+            {
+                string baseUsername = model.Email.Split('@')[0];
+                string username = baseUsername;
+                int counter = 1;
+                while (_context.Customers.Any(c => c.Username == username))
+                {
+                    username = baseUsername + counter;
+                    counter++;
+                }
+                model.Username = username;
+            }
+
+            _context.Customers.Add(model);
+            await _context.SaveChangesAsync();
+
+            // ✅ Correct session
+            HttpContext.Session.SetInt32("CustomerID", model.CustomerID);
+            HttpContext.Session.SetString("Gmail_Address", model.Email);
+            HttpContext.Session.SetString("Role", "Customer");
+
+            TempData["SuccessMessage"] = "Details saved successfully!";
+            return RedirectToAction("Dashboard");
+        }
+
+        // Dashboard
+        public async Task<IActionResult> Dashboard()
+        {
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            var username = HttpContext.Session.GetString("Gmail_Address") ?? "Guest";
+
+            if (!customerId.HasValue || username == "Guest")
+                return RedirectToAction("Login", "Account");
+
             var bookings = await _context.Bookings
                 .Include(b => b.Car)
                 .Where(b => b.CustomerID == customerId)
                 .OrderByDescending(b => b.StartDate)
                 .ToListAsync();
 
+            var availableCars = await _context.Cars.ToListAsync();
+
             ViewBag.MyBookings = bookings;
-            ViewData["ActivePage"] = "Dashboard";
-            return View();
+            ViewBag.Username = username;
+
+            return View(availableCars);
         }
 
-        // ---------------- Profile (GET) ----------------
-        [HttpGet]
-        public async Task<IActionResult> Profile()
+        // Profile
+        public IActionResult Profile()
         {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (!customerId.HasValue)
                 return RedirectToAction("Login", "Account");
 
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
-            if (customer == null) return NotFound();
-
-            ViewData["ActivePage"] = "Profile";
-            return View(customer);
-        }
-
-        // ---------------- Profile (POST Update) ----------------
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateProfile(Customer model, IFormFile photo)
-        {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "Account");
-
-            var customer = await _context.Customers.FindAsync(model.CustomerID);
-            if (customer == null) return NotFound();
-
-            // Email duplicate check
-            var emailExists = await _context.Customers
-                .AnyAsync(c => c.Email == model.Email && c.CustomerID != model.CustomerID);
-            if (emailExists)
-            {
-                ModelState.AddModelError("Email", "This email is already in use!");
-                return View("Profile", model);
-            }
-
-            if (!ModelState.IsValid)
-                return View("Profile", model);
-
-            customer.FirstName = model.FirstName;
-            customer.LastName = model.LastName;
-            customer.Email = model.Email;
-            customer.PhoneNumber = model.PhoneNumber;
-            customer.Address = model.Address;
-
-            // Photo upload + old delete
-            if (photo != null)
-            {
-                if (!string.IsNullOrEmpty(customer.LicensePhoto))
-                {
-                    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", customer.LicensePhoto.TrimStart('/'));
-                    if (System.IO.File.Exists(oldPath))
-                    {
-                        System.IO.File.Delete(oldPath);
-                    }
-                }
-
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-
-                var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
-                var filePath = Path.Combine(path, fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await photo.CopyToAsync(stream);
-                }
-
-                customer.LicensePhoto = "/images/" + fileName;
-            }
-
-            _context.Customers.Update(customer);
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Profile updated successfully!";
-            return RedirectToAction("Profile");
-        }
-
-        // ---------------- Booking (GET) ----------------
-        [HttpGet]
-        public IActionResult Booking()
-        {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "Account");
-
-            ViewBag.AvailableCars = _context.Cars.Where(c => c.IsAvailable).ToList();
-            return View();
-        }
-
-        // ---------------- Booking (POST) ----------------
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Booking(Customer model, IFormFile LicensePhotoFile, int CarID, DateTime StartDate, DateTime EndDate)
-        {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "Account");
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.AvailableCars = _context.Cars.Where(c => c.IsAvailable).ToList();
-                return View(model);
-            }
-
-            // Duplicate booking check
-            var existingBooking = await _context.Bookings
-                .FirstOrDefaultAsync(b => b.CarID == CarID &&
-                                          ((StartDate >= b.StartDate && StartDate <= b.EndDate) ||
-                                           (EndDate >= b.StartDate && EndDate <= b.EndDate)));
-
-            if (existingBooking != null)
-            {
-                TempData["ErrorMessage"] = "This car is already booked in the selected period!";
-                return RedirectToAction("Booking");
-            }
-
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == model.Email);
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
             if (customer == null)
-            {
-                customer = model;
-
-                if (LicensePhotoFile != null)
-                {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-
-                    var fileName = Guid.NewGuid() + Path.GetExtension(LicensePhotoFile.FileName);
-                    var filePath = Path.Combine(path, fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await LicensePhotoFile.CopyToAsync(stream);
-                    }
-                    customer.LicensePhoto = "/images/" + fileName;
-                }
-
-                if (string.IsNullOrEmpty(customer.Username))
-                    customer.Username = customer.Email.Split('@')[0];
-
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
-            }
-
-            var booking = new Booking
-            {
-                CustomerID = customer.CustomerID,
-                CarID = CarID,
-                StartDate = StartDate,
-                EndDate = EndDate
-            };
-
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
-
-            // Car availability update
-            var car = await _context.Cars.FindAsync(CarID);
-            if (car != null)
-            {
-                car.IsAvailable = false;
-                _context.Cars.Update(car);
-                await _context.SaveChangesAsync();
-            }
-
-            HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
-            HttpContext.Session.SetString("Username", customer.Username);
-
-            TempData["SuccessMessage"] = "Booking confirmed!";
-            return RedirectToAction("BookingConfirmation", new { id = booking.BookingID });
-        }
-
-        // ---------------- Availability Search ----------------
-        [HttpGet]
-        public async Task<IActionResult> CheckAvailability(DateTime? startDate, DateTime? endDate)
-        {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
                 return RedirectToAction("Login", "Account");
 
-            ViewData["ActivePage"] = "Availability";
-
-            ViewBag.StartDate = startDate;
-            ViewBag.EndDate = endDate;
-
-            if (!startDate.HasValue || !endDate.HasValue || endDate <= startDate || startDate < DateTime.Today)
-            {
-                ViewBag.ShowResults = false;
-                return View("AvailabilitySearch", new List<Car>());
-            }
-
-            var bookedCarIDs = await _context.Bookings
-                .Where(b =>
-                    (startDate >= b.StartDate && startDate <= b.EndDate) ||
-                    (endDate >= b.StartDate && endDate <= b.EndDate) ||
-                    (startDate <= b.StartDate && endDate >= b.EndDate))
-                .Select(b => b.CarID)
-                .ToListAsync();
-
-            var availableCars = await _context.Cars
-                .Where(c => !bookedCarIDs.Contains(c.CarID))
-                .ToListAsync();
-
-            ViewBag.ShowResults = true;
-            return View("AvailabilitySearch", availableCars);
-        }
-
-        // ---------------- Booking Confirmation ----------------
-        public async Task<IActionResult> BookingConfirmation(int id)
-        {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "Account");
-
-            var booking = await _context.Bookings
-                .Include(b => b.Car)
-                .Include(b => b.Customer)
-                .FirstOrDefaultAsync(b => b.BookingID == id);
-
-            if (booking == null) return NotFound();
-            return View(booking);
+            return View(customer);
         }
     }
 }

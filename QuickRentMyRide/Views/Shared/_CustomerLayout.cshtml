@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,19 +7,17 @@
     <title>@ViewData["Title"] - QuickRentMyRide</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QuickRentMyRide.styles.css" asp-append-version="true" />
-
-   
 </head>
 <body>
     <!-- Header Navbar -->
     <header class="sticky-top shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" asp-controller="Customer" asp-action="C_Dashboard">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Customer" asp-action="Dashboard">
                     <img src="~/images/Logo.jpg" alt="Logo" width="50" height="40" class="me-2" />
                     <strong>QuickRentMyRide</strong>
                 </a>
@@ -29,7 +28,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Dashboard" ? "active" : "")"
-                               asp-controller="Customer" asp-action="C_Dashboard">
+                               asp-controller="Customer" asp-action="Dashboard">
                                 <i class="bi bi-house-door"></i> Dashboard
                             </a>
                         </li>
@@ -56,10 +55,10 @@
             @RenderBody()
         </main>
     </div>
-    @* Footer *@
+
+    <!-- Footer -->
     <div class="container-fluid text-white py-5 px-sm-3 px-md-5 position-relative"
          style="margin-top: 90px; background: url('/images/Logo.jpg') no-repeat center center; background-size: cover; background-blend-mode: darken; background-color: rgba(33,37,41,0.95);">
-
         <div class="row g-5 pt-4">
             <div class="col-lg-4 col-md-6">
                 <h4 class="text-uppercase text-white mb-4">Get In Touch</h4>

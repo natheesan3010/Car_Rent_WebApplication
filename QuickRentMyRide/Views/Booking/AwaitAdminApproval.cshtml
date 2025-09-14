@@ -1,0 +1,43 @@
+﻿@model QuickRentMyRide.Models.Booking
+
+@{
+    ViewBag.Title = "Awaiting Admin Approval";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // அல்லது உங்கள் AdminLayout
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Booking Awaiting Approval</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p class="fs-5">Hi <strong>@Model.CustomerName</strong>,</p>
+                    <p>Your booking for the car <strong>@Model.Car.CarModel (@Model.Car.NumberPlate)</strong> has been verified via OTP.</p>
+
+                    <p class="text-warning fw-bold fs-6">
+                        Your booking is now awaiting admin approval.
+                    </p>
+
+                    <div class="card mb-3 border-info shadow-sm">
+                        <div class="card-body text-start">
+                            <h6 class="card-title fw-bold">Booking Details:</h6>
+                            <p class="mb-1">Start Date: @Model.StartDate.ToString("dd/MM/yyyy")</p>
+                            <p class="mb-1">End Date: @Model.EndDate.ToString("dd/MM/yyyy")</p>
+                            <p class="mb-0">Total Price: LKR @Model.TotalPrice</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        You will receive an email once the admin approves or rejects your booking.
+                    </div>
+
+                    <a asp-controller="Booking" asp-action="MyBookings" class="btn btn-primary btn-lg mt-3">
+                        View My Bookings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

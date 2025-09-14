@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;  // For password hashing utilities
-using QuickRentMyRide.Data;            // Your application's data context
-using QuickRentMyRide.Models;          // Your User model
-using Microsoft.AspNetCore.Http;       // For session management
-using Microsoft.AspNetCore.Mvc;        // MVC controller base classes
-using System.Linq;                     // For LINQ queries
-using System;                         // For string and char utilities
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using QuickRentMyRide.Data;
+using QuickRentMyRide.Models;
+using System.Linq;
+using System;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -19,25 +19,18 @@ namespace QuickRentMyRide.Controllers
             _passwordHasher = new PasswordHasher<User>();
         }
 
-        // GET: /Account/Login
+        // GET: Login
         [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
-        // GET: /Account/Register
+        // GET: Register
         [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
 
-        // Helper method to check password complexity
+        // Password Complexity
         private bool IsPasswordComplex(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                return false;
+            if (string.IsNullOrWhiteSpace(password)) return false;
 
             bool hasUpper = password.Any(char.IsUpper);
             bool hasLower = password.Any(char.IsLower);
@@ -48,9 +41,9 @@ namespace QuickRentMyRide.Controllers
             return hasUpper && hasLower && hasDigit && hasSpecial && hasMinLength;
         }
 
-        // POST: /Account/Register
+        // POST: Register
         [HttpPost]
-        public IActionResult Register(string username, string password, string confirmPassword)
+        public IActionResult Register(string Gmail_Address, string password, string confirmPassword)
         {
             if (password != confirmPassword)
             {
@@ -60,11 +53,11 @@ namespace QuickRentMyRide.Controllers
 
             if (!IsPasswordComplex(password))
             {
-                ViewBag.Error = "Password must be at least 8 characters and include uppercase, lowercase, digit, and special character.";
+                ViewBag.Error = "Password must meet complexity requirements.";
                 return View();
             }
 
-            var existingUser = _context.Users.FirstOrDefault(u => u.Username == username);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Gmail_Address == Gmail_Address);
             if (existingUser != null)
             {
                 ViewBag.Error = "Username already taken!";
@@ -73,38 +66,38 @@ namespace QuickRentMyRide.Controllers
 
             var newUser = new User
             {
-                Username = username,
-                Role = "Customer"
+                Gmail_Address = Gmail_Address,
+                Role = "Customer",
+                Password = _passwordHasher.HashPassword(null, password)
             };
-
-            // Hash password before saving
-            newUser.Password = _passwordHasher.HashPassword(newUser, password);
 
             _context.Users.Add(newUser);
             _context.SaveChanges();
 
             ViewBag.Success = "Account created successfully! You can now login.";
+
+            // ✅ முக்கியம்: return statement
             return View();
         }
 
-        // POST: /Account/Login
+
+
+        // POST: Login
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login(string Gmail_Address, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            var user = _context.Users.FirstOrDefault(u => u.Gmail_Address == Gmail_Address);
 
             if (user != null)
             {
                 var result = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
                 if (result == PasswordVerificationResult.Success)
                 {
-                    HttpContext.Session.SetString("Username", user.Username);
+                    HttpContext.Session.SetString("Gmail_Address", user.Gmail_Address);
                     HttpContext.Session.SetString("Role", user.Role);
 
                     if (user.Role == "Customer")
-                    {
-                        return RedirectToAction("C_Dashboard", "Customer");
-                    }
+                        return RedirectToAction("Dashboard", "Customer");
                     else
                     {
                         ViewBag.Error = "Only customers can log in here.";
@@ -118,20 +111,16 @@ namespace QuickRentMyRide.Controllers
             return View();
         }
 
+        // Logout
         [HttpGet]
         public IActionResult Logout()
         {
-            // Session-ஐ முழுவதும் clear பண்ணு
             HttpContext.Session.Clear();
-
-            // Cache disable பண்ணு (browser back button prevent)
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             Response.Headers["Pragma"] = "no-cache";
             Response.Headers["Expires"] = "0";
 
-            // Login page-க்கு redirect பண்ணு
             return RedirectToAction("Login", "Account");
         }
-
     }
 }

@@ -7,11 +7,11 @@
 
 <div class="container py-5">
 
-    <h2 class="text-center mb-4 text-uppercase fw-bold">Manage Bookings</h2>
+    <h2 class="text-center mb-4 text-uppercase fw-bold text-primary">Manage Bookings</h2>
 
     <div class="table-responsive shadow-sm rounded">
         <table class="table table-hover table-striped align-middle mb-0 bg-white">
-            <thead class="table-dark">
+            <thead class="table-dark text-center">
                 <tr>
                     <th>ID</th>
                     <th>Customer</th>
@@ -22,31 +22,45 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 @foreach (var b in Model)
                 {
                     <tr>
                         <td>@b.BookingID</td>
                         <td>@b.Customer.FirstName @b.Customer.LastName</td>
-                        <td>@b.Car.CarModel</td>
-                        <td>@b.StartDate.ToShortDateString()</td>
-                        <td>@b.EndDate.ToShortDateString()</td>
+                        <td>@b.Car.CarModel (@b.Car.NumberPlate)</td>
+                        <td>@b.StartDate.ToString("dd/MM/yyyy")</td>
+                        <td>@b.EndDate.ToString("dd/MM/yyyy")</td>
                         <td>
-                            <span class="badge @(b.Status == "Pending" ? "bg-warning" : b.Status == "Approved" ? "bg-success" : "bg-danger")">
-                                @b.Status
-                            </span>
-                        </td>
-                        <td>
-                            @if (b.Status == "Pending")
+                            <span class="badge
+                                             @(b.Status == "Pending" ? "bg-warning" :
+                                                                             b.Status == "OTPVerified" ? "bg-info" :
+                                                                             b.Status == "Confirmed" ? "bg-success" : "bg-danger")">
+                            @b.Status
+                        </span>
+                    </td>
+                    <td>
+                        @if (b.Status == "OTPVerified")
                             {
-                                <form asp-action="ApproveBooking" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@b.BookingID" />
-                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                </form>
-                                <form asp-action="RejectBooking" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@b.BookingID" />
-                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                </form>
+                                <!-- Approve / Reject buttons for OTP verified bookings -->
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form asp-action="AdminApprove" asp-controller="Booking" method="post">
+                                        <input type="hidden" name="bookingId" value="@b.BookingID" />
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+                                    <form asp-action="AdminReject" asp-controller="Booking" method="post">
+                                        <input type="hidden" name="bookingId" value="@b.BookingID" />
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No actions available</span>
                             }
                         </td>
                     </tr>

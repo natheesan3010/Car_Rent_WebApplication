@@ -1,0 +1,45 @@
+﻿@model IEnumerable<QuickRentMyRide.Models.Car>
+
+<div class="container py-5">
+    <h3 class="mb-4">Available Cars / Products</h3>
+    <div class="row g-4">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 card-hover">
+                    <img src="@(string.IsNullOrEmpty(car.CarImage) ? "~/images/default-car.webp" : car.CarImage)" 
+                         class="card-img-top" style="height:200px; object-fit:cover;" 
+                         alt="@car.CarBrand @car.CarModel" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@car.CarBrand @car.CarModel</h5>
+                        <p class="text-primary fw-bold">LKR @car.RentPerDay</p>
+
+                        <form asp-controller="Booking" asp-action="QuickBook" method="post" class="mt-auto">
+                            <input type="hidden" name="carID" value="@car.CarID" />
+                            <button type="submit" class="btn btn-primary w-100 book-now-btn">
+                                BOOK NOW
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card-hover {
+            transition: transform 0.3s;
+        }
+        .card-hover:hover {
+            transform: scale(1.03);
+        }
+        .book-now-btn {
+            transition: transform 0.3s;
+        }
+        .book-now-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+}

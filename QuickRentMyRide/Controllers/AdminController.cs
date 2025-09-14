@@ -2,6 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
+using QuickRentMyRide.Helpers; // OTP + Email helpers
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -20,7 +26,10 @@ namespace QuickRentMyRide.Controllers
             ViewBag.TotalCustomers = await _context.Customers.CountAsync();
             ViewBag.TotalCars = await _context.Cars.CountAsync();
             ViewBag.TotalBookings = await _context.Bookings.CountAsync();
-            ViewBag.PendingBookings = await _context.Bookings.Where(b => b.Status == "Pending").CountAsync();
+            ViewBag.PendingBookings = await _context.Bookings.Where(b => b.Status == "OTPVerified").CountAsync();
+            ViewBag.TotalRevenue = await _context.Bookings
+                .Where(b => b.Status == "Approved")
+                .SumAsync(b => b.TotalPrice);
 
             return View();
         }
@@ -39,17 +48,15 @@ namespace QuickRentMyRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCustomer(Customer customer, IFormFile LicensePhotoFile)
         {
+            if (!ModelState.IsValid) return View(customer);
+
             if (LicensePhotoFile != null)
-            {
-                var fileName = Guid.NewGuid() + Path.GetExtension(LicensePhotoFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using var stream = new FileStream(path, FileMode.Create);
-                await LicensePhotoFile.CopyToAsync(stream);
-                customer.LicensePhoto = "/images/" + fileName;
-            }
+                customer.LicensePhoto = await UploadFileAsync(LicensePhotoFile, "images");
 
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Customer added successfully!";
             return RedirectToAction("ManageCustomers");
         }
 
@@ -66,11 +73,10 @@ namespace QuickRentMyRide.Controllers
         public async Task<IActionResult> EditCustomer(int id, Customer model, IFormFile LicensePhotoFile)
         {
             if (id != model.CustomerID) return BadRequest();
+            if (!ModelState.IsValid) return View(model);
 
             var customer = await _context.Customers.FindAsync(id);
             if (customer == null) return NotFound();
-
-            if (!ModelState.IsValid) return View(model);
 
             customer.FirstName = model.FirstName;
             customer.LastName = model.LastName;
@@ -79,13 +85,7 @@ namespace QuickRentMyRide.Controllers
             customer.Address = model.Address;
 
             if (LicensePhotoFile != null)
-            {
-                var fileName = Guid.NewGuid() + Path.GetExtension(LicensePhotoFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using var stream = new FileStream(path, FileMode.Create);
-                await LicensePhotoFile.CopyToAsync(stream);
-                customer.LicensePhoto = "/images/" + fileName;
-            }
+                customer.LicensePhoto = await UploadFileAsync(LicensePhotoFile, "images");
 
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
@@ -121,18 +121,17 @@ namespace QuickRentMyRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCar(Car car, IFormFile CarImageFile)
         {
+            if (!ModelState.IsValid) return View(car);
+
             if (CarImageFile != null)
-            {
-                var fileName = Guid.NewGuid() + Path.GetExtension(CarImageFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using var stream = new FileStream(path, FileMode.Create);
-                await CarImageFile.CopyToAsync(stream);
-                car.CarImage = "/images/" + fileName;
-            }
+                car.CarImage = await UploadFileAsync(CarImageFile, "images");
 
             car.IsAvailable = true;
+
             _context.Cars.Add(car);
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Car added successfully!";
             return RedirectToAction("ManageCars");
         }
 
@@ -149,26 +148,18 @@ namespace QuickRentMyRide.Controllers
         public async Task<IActionResult> EditCar(int id, Car model, IFormFile CarImageFile)
         {
             if (id != model.CarID) return BadRequest();
+            if (!ModelState.IsValid) return View(model);
 
             var car = await _context.Cars.FindAsync(id);
             if (car == null) return NotFound();
 
-            if (!ModelState.IsValid) return View(model);
-
-            car.CarID = model.CarID;
             car.CarModel = model.CarModel;
             car.NumberPlate = model.NumberPlate;
             car.RentPerDay = model.RentPerDay;
             car.IsAvailable = model.IsAvailable;
 
             if (CarImageFile != null)
-            {
-                var fileName = Guid.NewGuid() + Path.GetExtension(CarImageFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using var stream = new FileStream(path, FileMode.Create);
-                await CarImageFile.CopyToAsync(stream);
-                car.CarImage = "/images/" + fileName;
-            }
+                car.CarImage = await UploadFileAsync(CarImageFile, "images");
 
             _context.Cars.Update(car);
             await _context.SaveChangesAsync();
@@ -206,16 +197,23 @@ namespace QuickRentMyRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveBooking(int id)
         {
-            var booking = await _context.Bookings.Include(b => b.Car).FirstOrDefaultAsync(b => b.BookingID == id);
-            if (booking != null)
-            {
-                booking.Status = "Approved";
-                if (booking.Car != null)
-                    booking.Car.IsAvailable = false;
+            var booking = await _context.Bookings
+                .Include(b => b.Car)
+                .FirstOrDefaultAsync(b => b.BookingID == id);
 
-                _context.Bookings.Update(booking);
+            if (booking != null && booking.Status == "OTPVerified")
+            {
+                booking.Status = "Approved";           // Admin approved
+                booking.PaymentStatus = "Paid";        // Assume payment done
+                if (booking.Car != null)
+                    booking.Car.IsAvailable = false;   // Mark car as unavailable
+
                 await _context.SaveChangesAsync();
+
+                // Send email confirmation to customer
+                EmailHelper.SendBookingApproved(booking.Customer.Email, booking.BookingID);
             }
+
             return RedirectToAction("ManageBookings");
         }
 
@@ -223,17 +221,38 @@ namespace QuickRentMyRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RejectBooking(int id)
         {
-            var booking = await _context.Bookings.Include(b => b.Car).FirstOrDefaultAsync(b => b.BookingID == id);
-            if (booking != null)
+            var booking = await _context.Bookings
+                .Include(b => b.Car)
+                .FirstOrDefaultAsync(b => b.BookingID == id);
+
+            if (booking != null && booking.Status == "OTPVerified")
             {
                 booking.Status = "Rejected";
+                booking.PaymentStatus = "Failed";
                 if (booking.Car != null)
                     booking.Car.IsAvailable = true;
 
-                _context.Bookings.Update(booking);
                 await _context.SaveChangesAsync();
+
+                // Send email rejection
+                EmailHelper.SendBookingRejected(booking.Customer.Email, booking.BookingID);
             }
+
             return RedirectToAction("ManageBookings");
+        }
+
+        // ---------------- Helper: File Upload ----------------
+        private async Task<string> UploadFileAsync(IFormFile file, string folder = "images")
+        {
+            if (file == null) return null;
+
+            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, fileName);
+
+            using var stream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            return "/" + folder + "/" + fileName;
         }
     }
 }

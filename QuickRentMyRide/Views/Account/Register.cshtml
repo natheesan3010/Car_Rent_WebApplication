@@ -1,4 +1,9 @@
-﻿@{
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
@@ -21,24 +26,22 @@
             <div class="alert alert-success text-center">@ViewBag.Success</div>
         }
 
-        <form method="post" action="/Account/Register">
-            <div class="form-floating mb-3">
-                <input type="text" name="username" class="form-control" id="username" placeholder="Username" required />
-                <label for="username">Username</label>
+        <form asp-action="Register" method="post">
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="Gmail_Address" class="form-control" required />
             </div>
-
-            <div class="form-floating mb-3">
-                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required />
-                <label for="password">Password</label>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" required />
             </div>
-
-            <div class="form-floating mb-3">
-                <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password" required />
-                <label for="confirmPassword">Confirm Password</label>
+            <div class="mb-3">
+                <label>Confirm Password</label>
+                <input type="password" name="confirmPassword" class="form-control" required />
             </div>
-
-            <button type="submit" class="btn btn-success w-100 py-2 mb-3">Register</button>
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
+
 
         <div class="text-center mt-3">
             <p class="mb-0">Already have an account? <a href="/Account/Login">Login</a></p>

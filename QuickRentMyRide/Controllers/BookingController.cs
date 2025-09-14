@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Models;
 using QuickRentMyRide.Data;
+using QuickRentMyRide.Helpers;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -16,123 +18,197 @@ namespace QuickRentMyRide.Controllers
             _context = context;
         }
 
-        // 🔹 GET: Booking/Create
+        // ---------------- CREATE BOOKING (GET) ----------------
         [HttpGet]
         public IActionResult Create(int carID)
         {
             var car = _context.Cars.Find(carID);
-            if (car == null) return NotFound();
+            if (car == null)
+                return NotFound();
 
             ViewBag.Car = car;
-            return View();
-        }
 
-        // 🔹 POST: Booking/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Booking booking)
-        {
-            if (ModelState.IsValid)
+            var booking = new Booking
             {
-                var car = _context.Cars.Find(booking.CarID);
-                if (car == null) return NotFound();
-
-                // Past date check
-                if (booking.StartDate < DateTime.Today)
-                {
-                    ModelState.AddModelError("", "Booking start date cannot be in the past.");
-                    ViewBag.Car = car;
-                    return View(booking);
-                }
-
-                // Double booking full overlap check
-                bool alreadyBooked = _context.Bookings.Any(b =>
-                    b.CarID == booking.CarID &&
-                    (
-                        (booking.StartDate >= b.StartDate && booking.StartDate <= b.EndDate) ||  // start inside
-                        (booking.EndDate >= b.StartDate && booking.EndDate <= b.EndDate) ||      // end inside
-                        (booking.StartDate <= b.StartDate && booking.EndDate >= b.EndDate)       // full overlap
-                    )
-                );
-
-                if (alreadyBooked)
-                {
-                    ModelState.AddModelError("", "This car is already booked for the selected dates.");
-                    ViewBag.Car = car;
-                    return View(booking);
-                }
-
-                // Date validation
-                int days = (booking.EndDate - booking.StartDate).Days;
-                if (days <= 0)
-                {
-                    ModelState.AddModelError("", "The end date must be later than the start date.");
-                    ViewBag.Car = car;
-                    return View(booking);
-                }
-
-                // Price calculation
-                booking.TotalPrice = days * car.RentPerDay;
-
-                _context.Bookings.Add(booking);
-                _context.SaveChanges();
-
-                return RedirectToAction("Details", new { id = booking.BookingID });
-            }
+                CarID = car.CarID,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(1)
+            };
 
             return View(booking);
         }
 
-        // 🔹 GET: Booking/AvailabilitySearch
-        [HttpGet]
-        public IActionResult AvailabilitySearch()
+        // ---------------- CREATE BOOKING (POST) ----------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Booking booking)
         {
-            return View(); // இது AvailabilitySearch.cshtml-ஐ load பண்ணும்
+            var car = _context.Cars.Find(booking.CarID);
+            if (car == null) return NotFound();
+            ViewBag.Car = car;
+
+            // First-time customer check
+            var email = User.Identity.Name;
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["ErrorMessage"] = "Please login first.";
+                return RedirectToAction("AvailableCars", "Car");
+            }
+
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
+
+            // If customer not found, redirect to AddDetails page
+            if (customer == null)
+            {
+                TempData["CustomerEmail"] = email;
+                return RedirectToAction("AddDetails", "Customer");
+            }
+
+            booking.CustomerID = customer.CustomerID;
+
+            if (!ModelState.IsValid)
+                return View(booking);
+
+            // Validate dates
+            if (booking.StartDate < DateTime.Today)
+                booking.StartDate = DateTime.Today;
+            if (booking.EndDate <= booking.StartDate)
+                booking.EndDate = booking.StartDate.AddDays(1);
+
+            // Double booking check
+            bool alreadyBooked = _context.Bookings.Any(b =>
+                b.CarID == booking.CarID &&
+                (b.Status == "OTPVerified" || b.Status == "Approved") &&
+                ((booking.StartDate >= b.StartDate && booking.StartDate <= b.EndDate) ||
+                 (booking.EndDate >= b.StartDate && booking.EndDate <= b.EndDate) ||
+                 (booking.StartDate <= b.StartDate && booking.EndDate >= b.EndDate))
+            );
+
+            if (alreadyBooked)
+            {
+                ModelState.AddModelError("", "This car is already booked for the selected dates.");
+                return View(booking);
+            }
+
+            // Calculate total price
+            int days = (booking.EndDate - booking.StartDate).Days;
+            booking.TotalPrice = (days <= 0 ? 1 : days) * car.RentPerDay;
+            booking.Status = "Pending";
+            booking.PaymentStatus = "Pending";
+
+            // Generate OTP
+            booking.OTP = OTPHelper.GenerateOTP();
+            booking.OTPGeneratedAt = DateTime.Now;
+
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+
+            // Send OTP
+            EmailHelper.SendOTP(customer.Email, booking.OTP);
+
+            TempData["BookingID"] = booking.BookingID;
+            TempData["SuccessMessage"] = $"Booking created! OTP sent to {customer.Email}";
+
+            return RedirectToAction("VerifyOTP");
         }
 
-
-        // 🔹 GET: Booking/Details/{id}
-        public IActionResult Details(int id)
+        // ---------------- VERIFY OTP ----------------
+        [HttpGet]
+        public async Task<IActionResult> VerifyOTP()
         {
-            var booking = _context.Bookings
-                .Where(b => b.BookingID == id)
-                .Include(b => b.Car) // Car info சேர்க்க
-                .FirstOrDefault();
+            if (TempData["BookingID"] == null)
+                return RedirectToAction("AvailableCars", "Car");
+
+            int bookingId = (int)TempData["BookingID"];
+            var booking = await _context.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.Car)
+                .FirstOrDefaultAsync(b => b.BookingID == bookingId);
 
             if (booking == null) return NotFound();
 
             return View(booking);
         }
 
-        // 🔹 GET: Booking/CheckAvailability
-        [HttpGet]
-        public IActionResult CheckAvailability(DateTime startDate, DateTime endDate)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifyOTP(string inputOTP)
         {
-            if (startDate < DateTime.Today || endDate <= startDate)
+            if (TempData["BookingID"] == null)
+                return RedirectToAction("AvailableCars", "Car");
+
+            int bookingId = (int)TempData["BookingID"];
+            var booking = await _context.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.Car)
+                .FirstOrDefaultAsync(b => b.BookingID == bookingId);
+
+            if (booking == null) return NotFound();
+
+            // OTP expire check
+            if (!booking.OTPGeneratedAt.HasValue || DateTime.Now > booking.OTPGeneratedAt.Value.AddMinutes(5))
             {
-                ModelState.AddModelError("", "Please enter valid dates.");
-                return View("AvailabilityResult", Enumerable.Empty<Car>());
+                booking.Status = "Cancelled";
+                await _context.SaveChangesAsync();
+                TempData["ErrorMessage"] = "OTP expired! Booking cancelled.";
+                return RedirectToAction("Create", new { carID = booking.CarID });
             }
 
-            // ஏற்கனவே booked ஆன கார்களை கண்டுபிடிக்க
-            var bookedCarIDs = _context.Bookings
-                .Where(b =>
-                    (startDate >= b.StartDate && startDate <= b.EndDate) ||   // start inside
-                    (endDate >= b.StartDate && endDate <= b.EndDate) ||       // end inside
-                    (startDate <= b.StartDate && endDate >= b.EndDate))       // full overlap
-                .Select(b => b.CarID)
-                .ToList();
+            if (inputOTP == booking.OTP)
+            {
+                booking.Status = "OTPVerified";
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "OTP verified! Waiting for admin approval.";
+                return RedirectToAction("AwaitAdminApproval");
+            }
 
-            // Available cars மட்டும் எடுக்க
-            var availableCars = _context.Cars
-                .Where(c => !bookedCarIDs.Contains(c.CarID))
-                .ToList();
-
-            ViewBag.StartDate = startDate;
-            ViewBag.EndDate = endDate;
-
-            return View("AvailabilityResult", availableCars);
+            ModelState.AddModelError("", "Invalid OTP. Try again.");
+            return View(booking);
         }
 
+        // ---------------- Await Admin Approval ----------------
+        public IActionResult AwaitAdminApproval()
+        {
+            return View();
+        }
+
+        // ---------------- My Bookings ----------------
+        public async Task<IActionResult> MyBookings()
+        {
+            var email = User.Identity.Name;
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("AvailableCars", "Car");
+
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
+            if (customer == null) return RedirectToAction("AvailableCars", "Car");
+
+            var bookings = await _context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.CustomerID == customer.CustomerID)
+                .OrderByDescending(b => b.StartDate)
+                .ToListAsync();
+
+            return View(bookings);
+        }
+
+        // ---------------- Cancel Booking ----------------
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking == null) return NotFound();
+
+            if (booking.StartDate <= DateTime.Today)
+            {
+                TempData["ErrorMessage"] = "Cannot cancel a booking that has already started.";
+                return RedirectToAction("MyBookings");
+            }
+
+            booking.Status = "Cancelled";
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Booking cancelled successfully!";
+            return RedirectToAction("MyBookings");
+        }
     }
 }

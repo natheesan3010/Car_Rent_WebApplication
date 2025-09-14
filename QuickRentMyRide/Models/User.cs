@@ -7,7 +7,7 @@ namespace QuickRentMyRide.Models
     {
         public Guid UserID { get; set; }  // Primary Key
         [Required]
-        public string Username { get; set; }
+        public string Gmail_Address { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
