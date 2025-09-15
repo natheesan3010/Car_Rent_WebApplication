@@ -23,8 +23,7 @@ namespace QuickRentMyRide.Controllers
         public IActionResult Create(int carID)
         {
             var car = _context.Cars.Find(carID);
-            if (car == null)
-                return NotFound();
+            if (car == null) return NotFound();
 
             ViewBag.Car = car;
 
@@ -43,11 +42,10 @@ namespace QuickRentMyRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Booking booking)
         {
-            var car = _context.Cars.Find(booking.CarID);
+            var car = await _context.Cars.FindAsync(booking.CarID);
             if (car == null) return NotFound();
             ViewBag.Car = car;
 
-            // First-time customer check
             var email = User.Identity.Name;
             if (string.IsNullOrEmpty(email))
             {
@@ -56,8 +54,6 @@ namespace QuickRentMyRide.Controllers
             }
 
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
-
-            // If customer not found, redirect to AddDetails page
             if (customer == null)
             {
                 TempData["CustomerEmail"] = email;
@@ -66,8 +62,7 @@ namespace QuickRentMyRide.Controllers
 
             booking.CustomerID = customer.CustomerID;
 
-            if (!ModelState.IsValid)
-                return View(booking);
+            if (!ModelState.IsValid) return View(booking);
 
             // Validate dates
             if (booking.StartDate < DateTime.Today)
@@ -90,13 +85,13 @@ namespace QuickRentMyRide.Controllers
                 return View(booking);
             }
 
-            // Calculate total price
+            // Total price
             int days = (booking.EndDate - booking.StartDate).Days;
             booking.TotalPrice = (days <= 0 ? 1 : days) * car.RentPerDay;
             booking.Status = "Pending";
             booking.PaymentStatus = "Pending";
 
-            // Generate OTP
+            // OTP
             booking.OTP = OTPHelper.GenerateOTP();
             booking.OTPGeneratedAt = DateTime.Now;
 
@@ -107,22 +102,25 @@ namespace QuickRentMyRide.Controllers
             EmailHelper.SendOTP(customer.Email, booking.OTP);
 
             TempData["BookingID"] = booking.BookingID;
+            TempData.Keep("BookingID");
             TempData["SuccessMessage"] = $"Booking created! OTP sent to {customer.Email}";
 
             return RedirectToAction("VerifyOTP");
         }
 
-        // ---------------- VERIFY OTP ----------------
+        // ---------------- VERIFY OTP (GET) ----------------
         [HttpGet]
         public async Task<IActionResult> VerifyOTP()
         {
-            if (TempData["BookingID"] == null)
+            if (!TempData.ContainsKey("BookingID"))
                 return RedirectToAction("AvailableCars", "Car");
 
             int bookingId = (int)TempData["BookingID"];
+            TempData.Keep("BookingID");
+
             var booking = await _context.Bookings
-                .Include(b => b.Customer)
                 .Include(b => b.Car)
+                .Include(b => b.Customer)
                 .FirstOrDefaultAsync(b => b.BookingID == bookingId);
 
             if (booking == null) return NotFound();
@@ -130,22 +128,23 @@ namespace QuickRentMyRide.Controllers
             return View(booking);
         }
 
+        // ---------------- VERIFY OTP (POST) ----------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyOTP(string inputOTP)
         {
-            if (TempData["BookingID"] == null)
+            if (!TempData.ContainsKey("BookingID"))
                 return RedirectToAction("AvailableCars", "Car");
 
             int bookingId = (int)TempData["BookingID"];
             var booking = await _context.Bookings
-                .Include(b => b.Customer)
                 .Include(b => b.Car)
+                .Include(b => b.Customer)
                 .FirstOrDefaultAsync(b => b.BookingID == bookingId);
 
             if (booking == null) return NotFound();
 
-            // OTP expire check
+            // OTP expiry
             if (!booking.OTPGeneratedAt.HasValue || DateTime.Now > booking.OTPGeneratedAt.Value.AddMinutes(5))
             {
                 booking.Status = "Cancelled";
@@ -180,7 +179,8 @@ namespace QuickRentMyRide.Controllers
                 return RedirectToAction("AvailableCars", "Car");
 
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
-            if (customer == null) return RedirectToAction("AvailableCars", "Car");
+            if (customer == null)
+                return RedirectToAction("AvailableCars", "Car");
 
             var bookings = await _context.Bookings
                 .Include(b => b.Car)
@@ -193,6 +193,7 @@ namespace QuickRentMyRide.Controllers
 
         // ---------------- Cancel Booking ----------------
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel(int id)
         {
             var booking = await _context.Bookings.FindAsync(id);
@@ -209,6 +210,31 @@ namespace QuickRentMyRide.Controllers
 
             TempData["SuccessMessage"] = "Booking cancelled successfully!";
             return RedirectToAction("MyBookings");
+        }
+
+        // ---------------- CHECK AVAILABILITY ----------------
+        [HttpGet]
+        public async Task<IActionResult> CheckAvailability(DateTime? startDate, DateTime? endDate)
+        {
+            var cars = await _context.Cars.ToListAsync();
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                cars = cars.Where(c =>
+                    !_context.Bookings.Any(b =>
+                        b.CarID == c.CarID &&
+                        (b.Status == "OTPVerified" || b.Status == "Approved") &&
+                        ((startDate.Value >= b.StartDate && startDate.Value <= b.EndDate) ||
+                         (endDate.Value >= b.StartDate && endDate.Value <= b.EndDate) ||
+                         (startDate.Value <= b.StartDate && endDate.Value >= b.EndDate))
+                    )
+                ).ToList();
+            }
+
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd") ?? "";
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd") ?? "";
+
+            return View(cars);
         }
     }
 }

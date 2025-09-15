@@ -36,22 +36,20 @@
                         <div class="mb-3">
                             <label asp-for="IsAvailable" class="form-label">Availability</label>
                             <select asp-for="IsAvailable" class="form-select">
-                                <select class="form-select" name="IsAvailable">
-                                    @if (Model.IsAvailable)
-                                    {
-                                        <option value="true" selected>Yes</option>
-                                        <option value="false">No</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="true">Yes</option>
-                                        <option value="false" selected>No</option>
-                                    }
-                                </select>
-
+                                @if (Model.IsAvailable)
+                                {
+                                    <option value="true" selected>Yes</option>
+                                    <option value="false">No</option>
+                                }
+                                else
+                                {
+                                    <option value="true">Yes</option>
+                                    <option value="false" selected>No</option>
+                                }
                             </select>
                             <span asp-validation-for="IsAvailable" class="text-danger"></span>
                         </div>
+
 
                         <div class="mb-3">
                             <label class="form-label">Car Image</label>

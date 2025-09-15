@@ -90,41 +90,51 @@ namespace QuickRentMyRide.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // Dashboard
+        // Dashboard - Customer Dashboard with bookings & available cars
         public async Task<IActionResult> Dashboard()
         {
-            var customerId = HttpContext.Session.GetInt32("CustomerID");
-            var username = HttpContext.Session.GetString("Gmail_Address") ?? "Guest";
-
-            if (!customerId.HasValue || username == "Guest")
-                return RedirectToAction("Login", "Account");
-
-            var bookings = await _context.Bookings
-                .Include(b => b.Car)
-                .Where(b => b.CustomerID == customerId)
-                .OrderByDescending(b => b.StartDate)
-                .ToListAsync();
-
-            var availableCars = await _context.Cars.ToListAsync();
-
-            ViewBag.MyBookings = bookings;
-            ViewBag.Username = username;
-
-            return View(availableCars);
-        }
-
-        // Profile
-        public IActionResult Profile()
-        {
+            // Session check
             var customerId = HttpContext.Session.GetInt32("CustomerID");
             if (!customerId.HasValue)
                 return RedirectToAction("Login", "Account");
 
-            var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
+            // Get username/email
+            var username = HttpContext.Session.GetString("Gmail_Address") ?? "Guest";
+            if (username == "Guest")
+                return RedirectToAction("Login", "Account");
+
+            // Get customer bookings
+            var bookings = await _context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.CustomerID == customerId.Value)
+                .OrderByDescending(b => b.StartDate)
+                .ToListAsync();
+
+            // Get all available cars
+            var availableCars = await _context.Cars.ToListAsync();
+
+            // Pass data to view
+            ViewBag.MyBookings = bookings;
+            ViewBag.Username = username;
+
+            return View(availableCars); // Pass cars list as model
+        }
+
+        // Profile - Show logged-in customer's profile
+        public IActionResult Profile()
+        {
+            // Session check
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (!customerId.HasValue)
+                return RedirectToAction("Login", "Account");
+
+            // Get customer details
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId.Value);
             if (customer == null)
                 return RedirectToAction("Login", "Account");
 
             return View(customer);
         }
+
     }
 }

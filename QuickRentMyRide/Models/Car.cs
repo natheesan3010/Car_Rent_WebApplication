@@ -9,7 +9,6 @@ namespace QuickRentMyRide.Models
         [Required]
         public string NumberPlate { get; set; }
 
-        [Required]
         public string CarImage { get; set; }
 
         [Required]

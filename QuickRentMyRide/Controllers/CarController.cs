@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using Microsoft.Extensions.Options;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -24,7 +23,7 @@ namespace QuickRentMyRide.Controllers
             _cloudinary = cloudinary;
         }
 
-        // GET: Car/CarList?search=abc&page=1
+        // GET: CarList
         public async Task<IActionResult> CarList(string search, int page = 1, int pageSize = DefaultPageSize)
         {
             var query = _context.Cars.AsQueryable();
@@ -53,6 +52,42 @@ namespace QuickRentMyRide.Controllers
             return View(cars);
         }
 
+        // GET: AddCar
+        [HttpGet]
+        public IActionResult AddCar()
+        {
+            return View();
+        }
+
+        // POST: AddCar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCar(Car model, IFormFile CarImageFile)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // Cloudinary upload
+            if (CarImageFile != null && CarImageFile.Length > 0)
+            {
+                using var stream = CarImageFile.OpenReadStream();
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(CarImageFile.FileName, stream),
+                    Folder = "CarImages"
+                };
+                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                model.CarImage = uploadResult.SecureUrl.ToString();
+            }
+
+            _context.Cars.Add(model);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Car added successfully!";
+            return RedirectToAction("CarList");
+        }
+
+        // GET: EditCar
         [HttpGet]
         public async Task<IActionResult> EditCar(int id)
         {
@@ -61,7 +96,9 @@ namespace QuickRentMyRide.Controllers
             return View(car);
         }
 
+        // POST: EditCar
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCar(Car updatedCar, IFormFile CarImageFile)
         {
             if (!ModelState.IsValid)
@@ -76,28 +113,26 @@ namespace QuickRentMyRide.Controllers
             car.RentPerDay = updatedCar.RentPerDay;
             car.IsAvailable = updatedCar.IsAvailable;
 
-            // Cloudinary upload
-            if (CarImageFile != null)
+            if (CarImageFile != null && CarImageFile.Length > 0)
             {
-                using (var stream = CarImageFile.OpenReadStream())
+                using var stream = CarImageFile.OpenReadStream();
+                var uploadParams = new ImageUploadParams()
                 {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(CarImageFile.FileName, stream),
-                        Folder = "CarImages"
-                    };
-                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                    car.CarImage = uploadResult.SecureUrl.ToString();
-                }
+                    File = new FileDescription(CarImageFile.FileName, stream),
+                    Folder = "CarImages"
+                };
+                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                car.CarImage = uploadResult.SecureUrl.ToString();
             }
 
             await _context.SaveChangesAsync();
-
             TempData["Success"] = "Car updated successfully!";
             return RedirectToAction("CarList");
         }
 
+        // POST: DeleteCar
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCar(int id)
         {
             var car = await _context.Cars.FindAsync(id);
@@ -107,14 +142,11 @@ namespace QuickRentMyRide.Controllers
                 return RedirectToAction("CarList");
             }
 
-            // Optional: Cloudinary-ல் இருந்து image remove செய்யலாம்
             if (!string.IsNullOrEmpty(car.CarImage))
             {
                 var publicId = GetCloudinaryPublicId(car.CarImage);
                 if (!string.IsNullOrEmpty(publicId))
-                {
                     await _cloudinary.DestroyAsync(new DeletionParams(publicId));
-                }
             }
 
             _context.Cars.Remove(car);
@@ -124,15 +156,14 @@ namespace QuickRentMyRide.Controllers
             return RedirectToAction("CarList");
         }
 
-        // Cloudinary URL-இல் இருந்து public ID எடுக்க helper function
+        // Helper: Cloudinary public ID
         private string GetCloudinaryPublicId(string imageUrl)
         {
             try
             {
                 var uri = new Uri(imageUrl);
-                var segments = uri.Segments;
-                var fileName = segments.Last();
-                return "CarImages/" + fileName.Split('.')[0]; // folder name + filename without extension
+                var fileName = uri.Segments.Last();
+                return "CarImages/" + fileName.Split('.')[0];
             }
             catch
             {

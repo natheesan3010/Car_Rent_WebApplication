@@ -5,6 +5,7 @@ using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -27,7 +28,7 @@ namespace QuickRentMyRide.Controllers
         [HttpGet]
         public IActionResult Register() => View();
 
-        // Password Complexity
+        // 🔐 Password Complexity
         private bool IsPasswordComplex(string password)
         {
             if (string.IsNullOrWhiteSpace(password)) return false;
@@ -53,34 +54,32 @@ namespace QuickRentMyRide.Controllers
 
             if (!IsPasswordComplex(password))
             {
-                ViewBag.Error = "Password must meet complexity requirements.";
+                ViewBag.Error = "Password must contain Uppercase, Lowercase, Digit, Special char and min 8 length.";
                 return View();
             }
 
             var existingUser = _context.Users.FirstOrDefault(u => u.Gmail_Address == Gmail_Address);
             if (existingUser != null)
             {
-                ViewBag.Error = "Username already taken!";
+                ViewBag.Error = "Email already registered!";
                 return View();
             }
 
             var newUser = new User
             {
                 Gmail_Address = Gmail_Address,
-                Role = "Customer",
-                Password = _passwordHasher.HashPassword(null, password)
+                Role = "Customer"
             };
+
+            // ✅ Correct password hash
+            newUser.Password = _passwordHasher.HashPassword(newUser, password);
 
             _context.Users.Add(newUser);
             _context.SaveChanges();
 
-            ViewBag.Success = "Account created successfully! You can now login.";
-
-            // ✅ முக்கியம்: return statement
-            return View();
+            TempData["Success"] = "Account created successfully! Please login.";
+            return RedirectToAction("Login");
         }
-
-
 
         // POST: Login
         [HttpPost]
@@ -90,36 +89,38 @@ namespace QuickRentMyRide.Controllers
 
             if (user != null)
             {
+                // 🔑 Verify password hash
                 var result = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
+
                 if (result == PasswordVerificationResult.Success)
                 {
+                    // ✅ Save session (Guid to string)
+                    HttpContext.Session.SetString("CustomerID", user.UserID.ToString());
                     HttpContext.Session.SetString("Gmail_Address", user.Gmail_Address);
                     HttpContext.Session.SetString("Role", user.Role);
 
-                    if (user.Role == "Customer")
+                    // ✅ Redirect by role
+                    if (user.Role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
                         return RedirectToAction("Dashboard", "Customer");
-                    else
-                    {
-                        ViewBag.Error = "Only customers can log in here.";
-                        HttpContext.Session.Clear();
-                        return View();
-                    }
+                    else if (user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                        return RedirectToAction("Index", "Admin");
+                    else if (user.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase))
+                        return RedirectToAction("Index", "Staff");
+
+                    return RedirectToAction("Login");
                 }
             }
 
-            ViewBag.Error = "Invalid username or password.";
+            ViewBag.Error = "Invalid Gmail or Password.";
             return View();
         }
 
-        // Logout
+
+        // GET: Logout
         [HttpGet]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            Response.Headers["Pragma"] = "no-cache";
-            Response.Headers["Expires"] = "0";
-
             return RedirectToAction("Login", "Account");
         }
     }

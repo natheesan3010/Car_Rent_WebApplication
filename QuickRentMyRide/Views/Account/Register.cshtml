@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@{
+﻿@{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
@@ -17,34 +12,31 @@
             <p class="text-muted">Sign up to start booking your ride</p>
         </div>
 
+        <!-- Error Message -->
         @if (ViewBag.Error != null)
         {
             <div class="alert alert-danger text-center">@ViewBag.Error</div>
         }
-        @if (ViewBag.Success != null)
-        {
-            <div class="alert alert-success text-center">@ViewBag.Success</div>
-        }
 
-        <form asp-action="Register" method="post">
+        <form asp-action="Register" asp-controller="Account" method="post">
             <div class="mb-3">
-                <label>Email</label>
+                <label>Email Address</label>
                 <input type="email" name="Gmail_Address" class="form-control" required />
             </div>
             <div class="mb-3">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" required />
+                <input type="password" name="password" class="form-control" required minlength="8" />
+                <small class="text-muted">Password must have uppercase, lowercase, number & special character.</small>
             </div>
             <div class="mb-3">
                 <label>Confirm Password</label>
-                <input type="password" name="confirmPassword" class="form-control" required />
+                <input type="password" name="confirmPassword" class="form-control" required minlength="8" />
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
 
-
         <div class="text-center mt-3">
-            <p class="mb-0">Already have an account? <a href="/Account/Login">Login</a></p>
+            <p class="mb-0">Already have an account? <a href="/Account/Login" class="fw-bold">Login</a></p>
         </div>
     </div>
 </div>

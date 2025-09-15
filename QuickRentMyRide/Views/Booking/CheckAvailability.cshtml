@@ -1,0 +1,62 @@
+﻿@model List<QuickRentMyRide.Models.Car>
+
+@{
+    ViewBag.Title = "Check Availability";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-4">Check Car Availability</h2>
+
+    <!-- Date Selection Form -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <form method="get" asp-action="CheckAvailability">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="startDate" class="form-label">Start Date</label>
+                        <input type="date" name="startDate" id="startDate" class="form-control" value="@ViewBag.StartDate" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endDate" class="form-label">End Date</label>
+                        <input type="date" name="endDate" id="endDate" class="form-control" value="@ViewBag.EndDate" required />
+                    </div>
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary w-50">Check Availability</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Available Cars -->
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row g-4">
+            @foreach (var car in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card shadow-sm h-100 d-flex flex-column">
+                        <img src="@car.CarImage" class="card-img-top" style="height:200px; object-fit:cover;" alt="@car.CarBrand @car.CarModel" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@car.CarBrand @car.CarModel</h5>
+                            <p class="card-text">
+                                <strong>Number Plate:</strong> @car.NumberPlate <br />
+                                <strong>Rent per Day:</strong> LKR @car.RentPerDay
+                            </p>
+                            <a asp-controller="Booking" asp-action="Create" asp-route-carID="@car.CarID" class="btn btn-success mt-auto w-100">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center mt-4">
+            No cars available for the selected dates.
+        </div>
+    }
+</div>

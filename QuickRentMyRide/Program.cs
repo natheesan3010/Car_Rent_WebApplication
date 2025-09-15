@@ -1,34 +1,26 @@
-﻿using CloudinaryDotNet;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using QuickRentMyRide.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services
 builder.Services.AddControllersWithViews();
 
-// EF Core DbContext
+// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("QuickRentMyRide")));
 
-// Cloudinary Settings
-builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+// Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Redirect to login if not authenticated
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    });
 
-// Cloudinary Service
-builder.Services.AddSingleton<Cloudinary>(sp =>
-{
-    var config = sp.GetRequiredService<IOptions<CloudinarySettings>>().Value;
-    Account account = new Account(config.CloudName, config.ApiKey, config.ApiSecret);
-    return new Cloudinary(account);
-});
-
-// Session Configuration
+// Session (optional, if you still need)
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -38,7 +30,6 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -50,16 +41,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Session middleware
+app.UseAuthentication(); // ✅ Must be before UseAuthorization
+app.UseAuthorization();
 app.UseSession();
 
-app.UseAuthorization();
-
-// Default route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-// -----------------------
