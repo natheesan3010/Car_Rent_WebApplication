@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
 using QuickRentMyRide.Models;
-using QuickRentMyRide.Helpers; // OTP + Email helpers
 using System;
 using System.IO;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace QuickRentMyRide.Controllers
             ViewBag.TotalCustomers = await _context.Customers.CountAsync();
             ViewBag.TotalCars = await _context.Cars.CountAsync();
             ViewBag.TotalBookings = await _context.Bookings.CountAsync();
-            ViewBag.PendingBookings = await _context.Bookings.Where(b => b.Status == "OTPVerified").CountAsync();
+            ViewBag.PendingBookings = await _context.Bookings.Where(b => b.Status == "Pending").CountAsync();
             ViewBag.TotalRevenue = await _context.Bookings
                 .Where(b => b.Status == "Approved")
                 .SumAsync(b => b.TotalPrice);
@@ -51,7 +50,7 @@ namespace QuickRentMyRide.Controllers
             if (!ModelState.IsValid) return View(customer);
 
             if (LicensePhotoFile != null)
-                customer.LicensePhoto = await UploadFileAsync(LicensePhotoFile, "images");
+                customer.LicensePhotoPath = await UploadFileAsync(LicensePhotoFile, "images");
 
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
@@ -85,7 +84,7 @@ namespace QuickRentMyRide.Controllers
             customer.Address = model.Address;
 
             if (LicensePhotoFile != null)
-                customer.LicensePhoto = await UploadFileAsync(LicensePhotoFile, "images");
+                customer.LicensePhotoPath = await UploadFileAsync(LicensePhotoFile, "images");
 
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
@@ -199,19 +198,17 @@ namespace QuickRentMyRide.Controllers
         {
             var booking = await _context.Bookings
                 .Include(b => b.Car)
+                .Include(b => b.Customer)
                 .FirstOrDefaultAsync(b => b.BookingID == id);
 
-            if (booking != null && booking.Status == "OTPVerified")
+            if (booking != null && booking.Status == "Pending")
             {
-                booking.Status = "Approved";           // Admin approved
-                booking.PaymentStatus = "Paid";        // Assume payment done
+                booking.Status = "Approved";
+                booking.PaymentStatus = "Paid";
                 if (booking.Car != null)
-                    booking.Car.IsAvailable = false;   // Mark car as unavailable
+                    booking.Car.IsAvailable = false;
 
                 await _context.SaveChangesAsync();
-
-                // Send email confirmation to customer
-                EmailHelper.SendBookingApproved(booking.Customer.Email, booking.BookingID);
             }
 
             return RedirectToAction("ManageBookings");
@@ -223,9 +220,10 @@ namespace QuickRentMyRide.Controllers
         {
             var booking = await _context.Bookings
                 .Include(b => b.Car)
+                .Include(b => b.Customer)
                 .FirstOrDefaultAsync(b => b.BookingID == id);
 
-            if (booking != null && booking.Status == "OTPVerified")
+            if (booking != null && booking.Status == "Pending")
             {
                 booking.Status = "Rejected";
                 booking.PaymentStatus = "Failed";
@@ -233,9 +231,6 @@ namespace QuickRentMyRide.Controllers
                     booking.Car.IsAvailable = true;
 
                 await _context.SaveChangesAsync();
-
-                // Send email rejection
-                EmailHelper.SendBookingRejected(booking.Customer.Email, booking.BookingID);
             }
 
             return RedirectToAction("ManageBookings");

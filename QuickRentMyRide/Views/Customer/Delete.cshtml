@@ -17,9 +17,9 @@
                     <p>Email: @Model.Email</p>
                     <p>Phone: @Model.PhoneNumber</p>
 
-                    @if (!string.IsNullOrEmpty(Model.LicensePhoto))
+                    @if (!string.IsNullOrEmpty(Model.LicensePhotoPath))
                     {
-                        <img src="@Model.LicensePhoto" width="100" class="rounded shadow" alt="License Photo" />
+                        <img src="@Model.LicensePhotoPath" width="100" class="rounded shadow" alt="License Photo" />
                     }
 
                     <form asp-action="Delete" method="post" class="mt-4">

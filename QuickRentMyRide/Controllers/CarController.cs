@@ -156,6 +156,18 @@ namespace QuickRentMyRide.Controllers
             return RedirectToAction("CarList");
         }
 
+        // GET: AvailableCars
+        public async Task<IActionResult> AvailableCars()
+        {
+            var cars = await _context.Cars
+                .Where(c => c.IsAvailable)
+                .OrderByDescending(c => c.CarID)
+                .ToListAsync();
+
+            return View(cars);
+        }
+
+
         // Helper: Cloudinary public ID
         private string GetCloudinaryPublicId(string imageUrl)
         {

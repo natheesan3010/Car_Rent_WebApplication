@@ -10,7 +10,7 @@
             <tr>
                 <td>@b.BookingID</td>
                 <td>@b.Car.CarModel</td>
-                <td>@b.CustomerName</td>
+                <td>@b.Customer.FirstName @b.Customer.LastName</td>
                 <td>@b.StartDate.ToShortDateString() - @b.EndDate.ToShortDateString()</td>
                 <td>$@b.TotalPrice</td>
                 <td>@b.Status</td>

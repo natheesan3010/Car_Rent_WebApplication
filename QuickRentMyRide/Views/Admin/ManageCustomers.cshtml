@@ -38,9 +38,9 @@
                         <td>@c.PhoneNumber</td>
                         <td>@c.Address</td>
                         <td>
-                            @if (!string.IsNullOrEmpty(c.LicensePhoto))
+                            @if (!string.IsNullOrEmpty(c.LicensePhotoPath))
                             {
-                                <img src="@c.LicensePhoto" class="img-thumbnail" style="width:80px;" />
+                                <img src="@c.LicensePhotoPath" class="img-thumbnail" style="width:80px;" />
                             }
                             else
                             {

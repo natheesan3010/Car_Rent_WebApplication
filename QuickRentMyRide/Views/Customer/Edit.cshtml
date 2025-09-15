@@ -45,9 +45,9 @@
                             <div class="col-md-6">
                                 <label class="form-label">License Photo</label>
                                 <input type="file" name="LicensePhotoFile" class="form-control" />
-                                @if (!string.IsNullOrEmpty(Model.LicensePhoto))
+                                @if (!string.IsNullOrEmpty(Model.LicensePhotoPath))
                                 {
-                                    <img src="@Model.LicensePhoto" width="80" class="mt-2 rounded shadow" alt="License Photo" />
+                                    <img src="@Model.LicensePhotoPath" width="80" class="mt-2 rounded shadow" alt="License Photo" />
                                 }
                             </div>
                             <div class="col-md-6">

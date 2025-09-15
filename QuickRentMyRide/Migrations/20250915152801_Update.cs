@@ -5,25 +5,24 @@
 namespace QuickRentMyRide.Migrations
 {
     /// <inheritdoc />
-    public partial class create : Migration
+    public partial class Update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "PricePerDay",
-                table: "Cars");
+            migrationBuilder.AddColumn<string>(
+                name: "LicensePhotoPath",
+                table: "Customers",
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "PricePerDay",
-                table: "Cars",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+            migrationBuilder.DropColumn(
+                name: "LicensePhotoPath",
+                table: "Customers");
         }
     }
 }

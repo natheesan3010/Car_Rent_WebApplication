@@ -5,6 +5,7 @@
 }
 
 <div class="container py-5">
+
     <h2 class="mb-4 text-center fw-bold text-primary">My Profile</h2>
 
     @if (TempData["SuccessMessage"] != null)
@@ -14,10 +15,38 @@
 
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8">
-            <div class="card shadow p-4 rounded">
+
+            <!-- Profile Card -->
+            <div class="card shadow p-4 rounded text-center">
+                <img src="@Model.LicensePhotoPath ?? " ~ /images/default-user.png""
+                     class="rounded-circle mb-3" style="width:120px;height:120px;" alt="Profile Photo" />
+                <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
+                <p class="text-muted mb-1">@Model.Username</p>
+                <p class="text-muted">@Model.Email</p>
+                <p class="text-muted">@Model.PhoneNumber</p>
+                <p class="text-muted">@Model.Address</p>
+
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    Edit Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
                 <form asp-controller="Customer" asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
-
                     <input type="hidden" asp-for="CustomerID" />
 
                     <div class="mb-3">
@@ -51,13 +80,26 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Upload Photo</label>
-                        <input type="file" name="photo" class="form-control" />
+                        <label class="form-label">Profile Photo</label>
+                        @if (!string.IsNullOrEmpty(Model.LicensePhotoPath))
+                        {
+                            <div class="mb-2 text-center">
+                                <img src="@Model.LicensePhotoPath" alt="Profile Photo" style="max-width:150px; border-radius:8px;" />
+                            </div>
+                        }
+                        <input type="file" name="photo" class="form-control" accept="image/*" />
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 mt-3">Update Profile</button>
+                    <button type="submit" class="btn btn-primary w-100">Update Profile</button>
                 </form>
-             </div>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

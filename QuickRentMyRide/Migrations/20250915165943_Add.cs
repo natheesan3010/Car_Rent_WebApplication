@@ -5,24 +5,24 @@
 namespace QuickRentMyRide.Migrations
 {
     /// <inheritdoc />
-    public partial class user : Migration
+    public partial class Add : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            migrationBuilder.AddColumn<string>(
                 name: "Username",
                 table: "Users",
-                newName: "Gmail_Address");
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Gmail_Address",
-                table: "Users",
-                newName: "Username");
+            migrationBuilder.DropColumn(
+                name: "Username",
+                table: "Users");
         }
     }
 }

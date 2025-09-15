@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 
 namespace QuickRentMyRide.Models
 {
     public class User
     {
-        public Guid UserID { get; set; }  // Primary Key
+        public int UserID { get; set; }
+
+        public string Username { get; set; }
+
         [Required]
+        [EmailAddress]
         public string Gmail_Address { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
 
-        [Required]
-        public string Role { get; set; }
+        public string Role { get; set; } = "Customer";
     }
 }

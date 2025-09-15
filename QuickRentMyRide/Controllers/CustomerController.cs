@@ -128,7 +128,7 @@ namespace QuickRentMyRide.Controllers
             if (!customerId.HasValue)
                 return RedirectToAction("Login", "Account");
 
-            // Get customer details
+            // Fetch customer from DB
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId.Value);
             if (customer == null)
                 return RedirectToAction("Login", "Account");

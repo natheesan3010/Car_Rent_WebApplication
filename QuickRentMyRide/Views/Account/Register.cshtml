@@ -1,42 +1,97 @@
-﻿@{
+﻿@model QuickRentMyRide.Models.Customer
+@{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 15px;">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 15px;">
 
         <div class="text-center mb-4">
-            <img src="~/images/Logo.jpg" alt="Car Rental Logo" style="width: 80px;">
+            <img src="~/images/Logo.jpg" alt="Logo" style="width: 80px;">
             <h4 class="mt-3 fw-bold">Create Your Account</h4>
-            <p class="text-muted">Sign up to start booking your ride</p>
         </div>
 
-        <!-- Error Message -->
         @if (ViewBag.Error != null)
         {
             <div class="alert alert-danger text-center">@ViewBag.Error</div>
         }
 
-        <form asp-action="Register" asp-controller="Account" method="post">
+        <form asp-action="Register" asp-controller="Account" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>First Name</label>
+                    <input type="text" name="FirstName" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Last Name</label>
+                    <input type="text" name="LastName" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label>Username</label>
+                <input type="text" name="Username" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Phone Number</label>
+                <input type="text" name="PhoneNumber" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Address</label>
+                <textarea name="Address" class="form-control" rows="2" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label>Gender</label>
+                <select name="Gender" class="form-select" required>
+                    <option value="">-- Select Gender --</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Date of Birth</label>
+                <input type="date" name="DOB" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label>IC Number</label>
+                <input type="text" name="ICNumber" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Upload Driving License</label>
+                <input type="file" name="LicensePhotoPath" class="form-control" accept="image/*" required />
+            </div>
+
             <div class="mb-3">
                 <label>Email Address</label>
-                <input type="email" name="Gmail_Address" class="form-control" required />
+                <input type="email" name="Email" class="form-control" required />
             </div>
+
             <div class="mb-3">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" required minlength="8" />
-                <small class="text-muted">Password must have uppercase, lowercase, number & special character.</small>
             </div>
+
             <div class="mb-3">
                 <label>Confirm Password</label>
                 <input type="password" name="confirmPassword" class="form-control" required minlength="8" />
             </div>
+
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
 
+        <!-- Sign-in link -->
         <div class="text-center mt-3">
-            <p class="mb-0">Already have an account? <a href="/Account/Login" class="fw-bold">Login</a></p>
+            <p class="mb-0">
+                Already have an account?
+                <a href="/Account/Login" class="fw-bold">Sign in</a>
+            </p>
         </div>
     </div>
 </div>

@@ -12,8 +12,8 @@ using QuickRentMyRide.Data;
 namespace QuickRentMyRide.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250914152928_modify")]
-    partial class modify
+    [Migration("20250915153818_Create2")]
+    partial class Create2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,7 +86,6 @@ namespace QuickRentMyRide.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CarImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CarModel")
@@ -143,18 +142,22 @@ namespace QuickRentMyRide.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LicensePhoto")
-                        .IsRequired()
+                    b.Property<string>("LicensePhotoPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Customers");
                 });
@@ -187,20 +190,21 @@ namespace QuickRentMyRide.Migrations
 
             modelBuilder.Entity("QuickRentMyRide.Models.User", b =>
                 {
-                    b.Property<Guid>("UserID")
+                    b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Password")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+
+                    b.Property<string>("Gmail_Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserID");
@@ -225,6 +229,17 @@ namespace QuickRentMyRide.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("QuickRentMyRide.Models.Customer", b =>
+                {
+                    b.HasOne("QuickRentMyRide.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

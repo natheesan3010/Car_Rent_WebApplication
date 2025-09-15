@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Models;
 using QuickRentMyRide.Data;
-using QuickRentMyRide.Helpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -44,21 +44,20 @@ namespace QuickRentMyRide.Controllers
         {
             var car = await _context.Cars.FindAsync(booking.CarID);
             if (car == null) return NotFound();
+
             ViewBag.Car = car;
 
-            var email = User.Identity.Name;
-            if (string.IsNullOrEmpty(email))
+            // Check login session
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (!customerId.HasValue)
             {
                 TempData["ErrorMessage"] = "Please login first.";
-                return RedirectToAction("AvailableCars", "Car");
+                return RedirectToAction("Login", "Account");
             }
 
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
+            var customer = await _context.Customers.FindAsync(customerId.Value);
             if (customer == null)
-            {
-                TempData["CustomerEmail"] = email;
                 return RedirectToAction("AddDetails", "Customer");
-            }
 
             booking.CustomerID = customer.CustomerID;
 
@@ -70,10 +69,10 @@ namespace QuickRentMyRide.Controllers
             if (booking.EndDate <= booking.StartDate)
                 booking.EndDate = booking.StartDate.AddDays(1);
 
-            // Double booking check
+            // Check double booking
             bool alreadyBooked = _context.Bookings.Any(b =>
                 b.CarID == booking.CarID &&
-                (b.Status == "OTPVerified" || b.Status == "Approved") &&
+                (b.Status == "Pending" || b.Status == "Approved") &&
                 ((booking.StartDate >= b.StartDate && booking.StartDate <= b.EndDate) ||
                  (booking.EndDate >= b.StartDate && booking.EndDate <= b.EndDate) ||
                  (booking.StartDate <= b.StartDate && booking.EndDate >= b.EndDate))
@@ -88,103 +87,28 @@ namespace QuickRentMyRide.Controllers
             // Total price
             int days = (booking.EndDate - booking.StartDate).Days;
             booking.TotalPrice = (days <= 0 ? 1 : days) * car.RentPerDay;
+
+            // Save booking directly as Pending
             booking.Status = "Pending";
             booking.PaymentStatus = "Pending";
-
-            // OTP
-            booking.OTP = OTPHelper.GenerateOTP();
-            booking.OTPGeneratedAt = DateTime.Now;
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            // Send OTP
-            EmailHelper.SendOTP(customer.Email, booking.OTP);
-
-            TempData["BookingID"] = booking.BookingID;
-            TempData.Keep("BookingID");
-            TempData["SuccessMessage"] = $"Booking created! OTP sent to {customer.Email}";
-
-            return RedirectToAction("VerifyOTP");
-        }
-
-        // ---------------- VERIFY OTP (GET) ----------------
-        [HttpGet]
-        public async Task<IActionResult> VerifyOTP()
-        {
-            if (!TempData.ContainsKey("BookingID"))
-                return RedirectToAction("AvailableCars", "Car");
-
-            int bookingId = (int)TempData["BookingID"];
-            TempData.Keep("BookingID");
-
-            var booking = await _context.Bookings
-                .Include(b => b.Car)
-                .Include(b => b.Customer)
-                .FirstOrDefaultAsync(b => b.BookingID == bookingId);
-
-            if (booking == null) return NotFound();
-
-            return View(booking);
-        }
-
-        // ---------------- VERIFY OTP (POST) ----------------
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyOTP(string inputOTP)
-        {
-            if (!TempData.ContainsKey("BookingID"))
-                return RedirectToAction("AvailableCars", "Car");
-
-            int bookingId = (int)TempData["BookingID"];
-            var booking = await _context.Bookings
-                .Include(b => b.Car)
-                .Include(b => b.Customer)
-                .FirstOrDefaultAsync(b => b.BookingID == bookingId);
-
-            if (booking == null) return NotFound();
-
-            // OTP expiry
-            if (!booking.OTPGeneratedAt.HasValue || DateTime.Now > booking.OTPGeneratedAt.Value.AddMinutes(5))
-            {
-                booking.Status = "Cancelled";
-                await _context.SaveChangesAsync();
-                TempData["ErrorMessage"] = "OTP expired! Booking cancelled.";
-                return RedirectToAction("Create", new { carID = booking.CarID });
-            }
-
-            if (inputOTP == booking.OTP)
-            {
-                booking.Status = "OTPVerified";
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "OTP verified! Waiting for admin approval.";
-                return RedirectToAction("AwaitAdminApproval");
-            }
-
-            ModelState.AddModelError("", "Invalid OTP. Try again.");
-            return View(booking);
-        }
-
-        // ---------------- Await Admin Approval ----------------
-        public IActionResult AwaitAdminApproval()
-        {
-            return View();
+            TempData["SuccessMessage"] = "Booking created successfully! Waiting for admin approval.";
+            return RedirectToAction("MyBookings");
         }
 
         // ---------------- My Bookings ----------------
         public async Task<IActionResult> MyBookings()
         {
-            var email = User.Identity.Name;
-            if (string.IsNullOrEmpty(email))
-                return RedirectToAction("AvailableCars", "Car");
-
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
-            if (customer == null)
-                return RedirectToAction("AvailableCars", "Car");
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (!customerId.HasValue)
+                return RedirectToAction("Login", "Account");
 
             var bookings = await _context.Bookings
                 .Include(b => b.Car)
-                .Where(b => b.CustomerID == customer.CustomerID)
+                .Where(b => b.CustomerID == customerId.Value)
                 .OrderByDescending(b => b.StartDate)
                 .ToListAsync();
 
@@ -223,7 +147,7 @@ namespace QuickRentMyRide.Controllers
                 cars = cars.Where(c =>
                     !_context.Bookings.Any(b =>
                         b.CarID == c.CarID &&
-                        (b.Status == "OTPVerified" || b.Status == "Approved") &&
+                        (b.Status == "Pending" || b.Status == "Approved") &&
                         ((startDate.Value >= b.StartDate && startDate.Value <= b.EndDate) ||
                          (endDate.Value >= b.StartDate && endDate.Value <= b.EndDate) ||
                          (startDate.Value <= b.StartDate && endDate.Value >= b.EndDate))

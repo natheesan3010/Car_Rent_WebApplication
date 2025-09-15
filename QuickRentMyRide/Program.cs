@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuickRentMyRide.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using QuickRentMyRide.Models;
+using CloudinaryDotNet;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +18,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login"; // Redirect to login if not authenticated
+        options.LoginPath = "/Account/Login";
         options.ExpireTimeSpan = TimeSpan.FromHours(1);
     });
 
-// Session (optional, if you still need)
+// Configure CloudinarySettings
+builder.Services.Configure<CloudinarySettings>(
+    builder.Configuration.GetSection("CloudinarySettings")
+);
+
+// Register Cloudinary as singleton for DI
+builder.Services.AddSingleton(provider =>
+{
+    var config = provider.GetRequiredService<IOptions<CloudinarySettings>>().Value;
+    var account = new Account(config.CloudName, config.ApiKey, config.ApiSecret);
+    return new Cloudinary(account);
+});
+
+// Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -41,7 +57,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); // ✅ Must be before UseAuthorization
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 

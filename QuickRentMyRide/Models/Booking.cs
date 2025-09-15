@@ -23,9 +23,6 @@ namespace QuickRentMyRide.Models
         [ForeignKey("CustomerID")]
         public Customer Customer { get; set; }
 
-        // Optional: CustomerName for quick display
-        [Required]
-        public string CustomerName { get; set; }
 
         // ---------------- DATES ----------------
         [DataType(DataType.Date)]
@@ -44,9 +41,5 @@ namespace QuickRentMyRide.Models
         // ---------------- BOOKING STATUS ----------------
         public string Status { get; set; } = "Pending"; // Pending / OTPVerified / Approved / Cancelled
 
-        // ---------------- OTP ----------------
-        public string OTP { get; set; } // 6-digit OTP for verification
-
-        public DateTime? OTPGeneratedAt { get; set; } // OTP timestamp
-    }
+     }
 }

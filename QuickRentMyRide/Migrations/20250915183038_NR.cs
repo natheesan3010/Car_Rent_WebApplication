@@ -6,10 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickRentMyRide.Migrations
 {
     /// <inheritdoc />
-    public partial class modify : Migration
+    public partial class NR : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "OTP",
+                table: "Bookings");
+
+            migrationBuilder.DropColumn(
+                name: "OTPGeneratedAt",
+                table: "Bookings");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "OTP",
@@ -22,18 +34,6 @@ namespace QuickRentMyRide.Migrations
                 table: "Bookings",
                 type: "datetime2",
                 nullable: true);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "OTP",
-                table: "Bookings");
-
-            migrationBuilder.DropColumn(
-                name: "OTPGeneratedAt",
-                table: "Bookings");
         }
     }
 }

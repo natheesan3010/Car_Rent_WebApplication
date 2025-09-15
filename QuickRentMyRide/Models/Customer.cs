@@ -1,10 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuickRentMyRide.Models
 {
     public class Customer
     {
         public int CustomerID { get; set; }
+
+        // 🔗 Foreign key to User
+        public int UserID { get; set; }
+
+        [ForeignKey("UserID")]
+        
 
         [Required]
         public string FirstName { get; set; }
@@ -20,8 +27,7 @@ namespace QuickRentMyRide.Models
         [Required]
         public string Email { get; set; }
 
-        [Required]
-        public string LicensePhoto { get; set; }
+       
 
         [Required]
         public string ICNumber { get; set; }
@@ -34,6 +40,11 @@ namespace QuickRentMyRide.Models
 
         [Required]
         public DateTime DOB { get; set; }
+
+        // Cloudinary URL save செய்ய இந்த property சேர்க்கவும்
+        public string? LicensePhotoPath { get; set; }
+
+        public User User { get; set; }
     }
 
 }

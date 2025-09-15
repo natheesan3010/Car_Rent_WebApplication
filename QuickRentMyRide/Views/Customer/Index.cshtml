@@ -62,9 +62,9 @@
                     <td>@c.Gender</td>
                     <td>@c.DOB.ToShortDateString()</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(c.LicensePhoto))
+                        @if (!string.IsNullOrEmpty(c.LicensePhotoPath))
                         {
-                            <img src="@c.LicensePhoto" width="60" alt="License Photo" />
+                            <img src="@c.LicensePhotoPath" width="60" alt="License Photo" />
                         }
                     </td>
                     <td>
