@@ -1,11 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QuickRentMyRide.Data;
+﻿using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using QuickRentMyRide.Models;
-using CloudinaryDotNet;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using QuickRentMyRide.Data;
+using QuickRentMyRide.Models;
+using Stripe;
+
+// Alias to avoid conflict between CloudinaryDotNet.Account and Stripe.Account
+using CloudinaryAccount = CloudinaryDotNet.Account;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 // Add services
 builder.Services.AddControllersWithViews();
@@ -22,6 +27,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(1);
     });
 
+// Stripe configuration
+StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
+
 // Configure CloudinarySettings
 builder.Services.Configure<CloudinarySettings>(
     builder.Configuration.GetSection("CloudinarySettings")
@@ -31,7 +39,7 @@ builder.Services.Configure<CloudinarySettings>(
 builder.Services.AddSingleton(provider =>
 {
     var config = provider.GetRequiredService<IOptions<CloudinarySettings>>().Value;
-    var account = new Account(config.CloudName, config.ApiKey, config.ApiSecret);
+    var account = new CloudinaryAccount(config.CloudName, config.ApiKey, config.ApiSecret);
     return new Cloudinary(account);
 });
 

@@ -1,7 +1,7 @@
 ﻿@model QuickRentMyRide.Models.Booking
-
 @{
     var car = ViewBag.Car as QuickRentMyRide.Models.Car;
+    var publishableKey = ViewBag.PublishableKey as string ?? "";
 }
 
 <div class="container py-5">
@@ -13,20 +13,13 @@
     }
     else
     {
-        <div class="card shadow-lg rounded-4 overflow-hidden mb-4"
-             style="transition: transform 0.3s;"
-             onmouseover="this.style.transform='scale(1.02)'"
-             onmouseout="this.style.transform='scale(1)'">
-
+        <div class="card shadow-lg rounded-4 mb-4">
             <div class="row g-0">
-                <!-- Car Image -->
                 <div class="col-md-5">
                     <img src="@(string.IsNullOrEmpty(car.CarImage) ? "~/images/default-car.webp" : car.CarImage)"
                          class="img-fluid h-100" style="object-fit: cover;"
                          alt="@car.CarBrand @car.CarModel" />
                 </div>
-
-                <!-- Car Details & Booking Form -->
                 <div class="col-md-7">
                     <div class="card-body p-4">
                         <h2 class="card-title mb-3 fw-bold">@car.CarBrand @car.CarModel</h2>
@@ -34,46 +27,36 @@
                             Price per day: LKR @car.RentPerDay
                         </span>
                         <hr />
-
                         <h5 class="mb-3 fw-semibold">Booking Details</h5>
-                        <form asp-action="Create" method="post">
-                            <input type="hidden" asp-for="CarID" value="@car.CarID" />
 
+                        <form id="bookingForm" method="post">
+                            <input type="hidden" id="CarID" value="@car.CarID" />
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label asp-for="StartDate" class="form-label fw-semibold">Start Date</label>
-                                    <input asp-for="StartDate" type="date" class="form-control form-control-lg"
-                                           value="@Model.StartDate.ToString("yyyy-MM-dd")" />
-                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    <label class="form-label fw-semibold">Start Date</label>
+                                    <input type="date" id="StartDate" class="form-control form-control-lg"
+                                           value="@Model?.StartDate.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString(" yyyy-MM-dd")" required />
                                 </div>
                                 <div class="col-md-6">
-                                    <label asp-for="EndDate" class="form-label fw-semibold">End Date</label>
-                                    <input asp-for="EndDate" type="date" class="form-control form-control-lg"
-                                           value="@Model.EndDate.ToString("yyyy-MM-dd")" />
-                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    <label class="form-label fw-semibold">End Date</label>
+                                    <input type="date" id="EndDate" class="form-control form-control-lg"
+                                           value="@Model?.EndDate.ToString("yyyy-MM-dd") ?? DateTime.Today.AddDays(1).ToString(" yyyy-MM-dd")" required />
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-success btn-lg w-100 shadow-sm book-btn">
-                                <i class="bi bi-check-circle me-1"></i> Book Now
+                            <button type="button" id="checkout-button" class="btn btn-success btn-lg w-100 shadow-sm book-btn">
+                                <i class="bi bi-credit-card me-1"></i> Pay & Book Now
                             </button>
                         </form>
 
-                        @if (!ViewData.ModelState.IsValid)
-                        {
-                            <div class="alert alert-danger mt-3">
-                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                                {
-                                    <div>@error.ErrorMessage</div>
-                                }
-                            </div>
-                        }
-
                         @if (TempData["SuccessMessage"] != null)
                         {
-                            <div class="alert alert-success mt-3">
-                                @TempData["SuccessMessage"]
-                            </div>
+                            <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+                        }
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
                         }
                     </div>
                 </div>
@@ -84,6 +67,31 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var stripe = Stripe('@publishableKey');
+
+            var btn = document.getElementById("checkout-button");
+            if(btn){
+                btn.addEventListener("click", function () {
+                    var carID = document.getElementById("CarID").value;
+                    var startDate = document.getElementById("StartDate").value;
+                    var endDate = document.getElementById("EndDate").value;
+
+                    fetch('@Url.Action("Checkout", "Booking")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ carID: parseInt(carID), startDate: startDate, endDate: endDate })
+                    })
+                    .then(res => res.json())
+                    .then(data => stripe.redirectToCheckout({ sessionId: data.id }))
+                    .catch(err => console.error(err));
+                });
+            }
+        });
+    </script>
 
     <style>
         .book-btn {

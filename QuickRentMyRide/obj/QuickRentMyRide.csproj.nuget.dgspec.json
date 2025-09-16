@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\OneDrive\\Desktop\\C_NR\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
+    "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (5)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\OneDrive\\Desktop\\C_NR\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {
+    "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (5)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\OneDrive\\Desktop\\C_NR\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (5)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "projectName": "QuickRentMyRide",
-        "projectPath": "C:\\Users\\HP\\OneDrive\\Desktop\\C_NR\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
+        "projectPath": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (5)\\Car_Rent_WebApplication\\QuickRentMyRide\\QuickRentMyRide.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\OneDrive\\Desktop\\C_NR\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
+        "outputPath": "C:\\Users\\HP\\OneDrive\\Desktop\\New folder (5)\\Car_Rent_WebApplication\\QuickRentMyRide\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -71,6 +71,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.7, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[48.5.0, )"
             }
           },
           "imports": [

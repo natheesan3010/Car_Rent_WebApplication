@@ -2,6 +2,7 @@ wwwroot\css\admin-dashboard.css
 wwwroot\css\login.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\044a8788-e2eb-4210-83bc-e7d4d7df43cb.webp
 wwwroot\images\0f64f3e3-15ae-4ac6-ba8c-962fcdcdcc59.webp
 wwwroot\images\316432c7-a788-4bdf-bf4e-587ea4955529.webp
 wwwroot\images\49647038-24bc-4f3e-b36d-03fa8bb955c0.jpg
@@ -82,3 +83,6 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\images\eda84128-eaef-47c8-8a8f-449b2c35b030.webp
+wwwroot\images\8c9e2cab-129c-4d84-ae88-ad5b8efa4cb8.webp
+wwwroot\images\389b07dc-502f-4d44-baeb-95a7982d0650.jpg
