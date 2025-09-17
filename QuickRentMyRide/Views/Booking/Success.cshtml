@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Payment Success";
+    var bookingId = ViewBag.BookingId;
+}
+
+<div class="container py-5">
+    <div class="card shadow-lg p-4 text-center">
+        <h2 class="text-success mb-3">Payment Successful!</h2>
+        <p>Your booking has been confirmed. 🎉</p>
+        <p><strong>Booking ID:</strong> @bookingId</p>
+
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">Go to Home</a>
+        <a href="@Url.Action("Details", "Booking", new { id = bookingId })" class="btn btn-outline-success mt-3 ms-2">View Booking</a>
+    </div>
+</div>

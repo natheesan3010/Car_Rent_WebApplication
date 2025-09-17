@@ -12,14 +12,15 @@ using CloudinaryAccount = CloudinaryDotNet.Account;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-// Add services
+// ---------------- Add services ----------------
 builder.Services.AddControllersWithViews();
 
-// DbContext
+// ---------------- DbContext ----------------
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("QuickRentMyRide")));
+    options.UseSqlServer(configuration.GetConnectionString("QuickRentMyRide"))
+);
 
-// Authentication
+// ---------------- Authentication ----------------
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -27,15 +28,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(1);
     });
 
-// Stripe configuration
+// ---------------- Stripe ----------------
 StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
 
-// Configure CloudinarySettings
+// ---------------- Cloudinary Settings ----------------
 builder.Services.Configure<CloudinarySettings>(
-    builder.Configuration.GetSection("CloudinarySettings")
+    configuration.GetSection("CloudinarySettings")
 );
 
-// Register Cloudinary as singleton for DI
 builder.Services.AddSingleton(provider =>
 {
     var config = provider.GetRequiredService<IOptions<CloudinarySettings>>().Value;
@@ -43,7 +43,7 @@ builder.Services.AddSingleton(provider =>
     return new Cloudinary(account);
 });
 
-// Session
+// ---------------- Session ----------------
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -54,6 +54,7 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+// ---------------- Middleware ----------------
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -69,8 +70,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 
+// ---------------- Default Route ----------------
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

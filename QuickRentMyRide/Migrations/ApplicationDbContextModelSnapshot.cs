@@ -75,6 +75,9 @@ namespace QuickRentMyRide.Migrations
                     b.Property<string>("CarImage")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CarImagePublicId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CarModel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

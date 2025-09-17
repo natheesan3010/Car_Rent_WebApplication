@@ -9,7 +9,7 @@ namespace QuickRentMyRide.Models
         [Required]
         public string NumberPlate { get; set; }
 
-        public string CarImage { get; set; }
+        public string? CarImage { get; set; }
 
         [Required]
         public bool IsAvailable { get; set; }
@@ -22,7 +22,9 @@ namespace QuickRentMyRide.Models
 
         [Required]
         public decimal RentPerDay { get; set; }
-       
+        public string? CarImagePublicId { get; set; } // <-- ADD THIS PROPERTY
+
+
     }
 
 }

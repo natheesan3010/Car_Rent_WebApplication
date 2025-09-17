@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Payment Cancelled";
+    var bookingId = ViewBag.BookingId;
+}
+
+<div class="container py-5">
+    <div class="card shadow-lg p-4 text-center">
+        <h2 class="text-danger mb-3">Payment Cancelled</h2>
+        <p>Your booking was not completed. You can try again.</p>
+        <p><strong>Booking ID:</strong> @bookingId</p>
+
+        <a href="@Url.Action("Create", "Booking", new { carId = bookingId })" class="btn btn-warning mt-3">Try Again</a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary mt-3 ms-2">Go to Home</a>
+    </div>
+</div>

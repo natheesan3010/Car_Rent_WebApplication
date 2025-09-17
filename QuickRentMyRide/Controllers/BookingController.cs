@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Stripe.Checkout;
+using System.Collections.Generic;
 
 namespace QuickRentMyRide.Controllers
 {
@@ -37,31 +39,20 @@ namespace QuickRentMyRide.Controllers
             return View(booking);
         }
 
-        // ---------------- CREATE BOOKING (POST) ----------------
+        // ---------------- CREATE BOOKING (POST) FOR AJAX ----------------
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Booking booking)
+        public async Task<IActionResult> Create([FromBody] Booking booking)
         {
             var car = await _context.Cars.FindAsync(booking.CarID);
-            if (car == null) return NotFound();
+            if (car == null) return Json(new { error = "Car not found" });
 
-            ViewBag.Car = car;
-
-            // Check login session
             var customerId = HttpContext.Session.GetInt32("CustomerID");
-            if (!customerId.HasValue)
-            {
-                TempData["ErrorMessage"] = "Please login first.";
-                return RedirectToAction("Login", "Account");
-            }
+            if (!customerId.HasValue) return Json(new { error = "Please login first" });
 
             var customer = await _context.Customers.FindAsync(customerId.Value);
-            if (customer == null)
-                return RedirectToAction("AddDetails", "Customer");
+            if (customer == null) return Json(new { error = "Customer details missing" });
 
             booking.CustomerID = customer.CustomerID;
-
-            if (!ModelState.IsValid) return View(booking);
 
             // Validate dates
             if (booking.StartDate < DateTime.Today)
@@ -78,26 +69,96 @@ namespace QuickRentMyRide.Controllers
                  (booking.StartDate <= b.StartDate && booking.EndDate >= b.EndDate))
             );
 
-            if (alreadyBooked)
-            {
-                ModelState.AddModelError("", "This car is already booked for the selected dates.");
-                return View(booking);
-            }
+            if (alreadyBooked) return Json(new { error = "Car already booked for selected dates" });
 
-            // Total price
             int days = (booking.EndDate - booking.StartDate).Days;
             booking.TotalPrice = (days <= 0 ? 1 : days) * car.RentPerDay;
 
-            // Save booking directly as Pending
             booking.Status = "Pending";
             booking.PaymentStatus = "Pending";
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Booking created successfully! Waiting for admin approval.";
-            return RedirectToAction("MyBookings");
+            // Return booking ID to proceed to Stripe
+            return Json(new { bookingId = booking.BookingID });
         }
+
+
+        // ---------------- CHECKOUT ----------------
+        [HttpGet]
+        public async Task<IActionResult> Checkout(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.Car)
+                .FirstOrDefaultAsync(b => b.BookingID == id);
+
+            if (booking == null) return NotFound();
+
+            ViewBag.Booking = booking;
+            ViewBag.PublishableKey = HttpContext.RequestServices
+                .GetRequiredService<IConfiguration>()["Stripe:PublishableKey"];
+
+            return View();
+        }
+
+        // ---------------- CREATE STRIPE CHECKOUT SESSION ----------------
+        [HttpPost]
+        public async Task<IActionResult> CreateCheckoutSession(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.Car)
+                .FirstOrDefaultAsync(b => b.BookingID == id);
+
+            if (booking == null) return NotFound();
+
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>
+                {
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            Currency = "usd",
+                            UnitAmount = (long)(booking.TotalPrice * 100), // cents
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = booking.Car.CarModel
+                            }
+                        },
+                        Quantity = 1
+                    }
+                },
+                Mode = "payment",
+                SuccessUrl = Url.Action("PaymentSuccess", "Booking", new { id = booking.BookingID }, Request.Scheme),
+                CancelUrl = Url.Action("MyBookings", "Booking", null, Request.Scheme)
+            };
+
+            var service = new SessionService();
+            var session = service.Create(options);
+
+            return Json(new { id = session.Id });
+        }
+
+        // ---------------- PAYMENT SUCCESS ----------------
+        public async Task<IActionResult> PaymentSuccess(int id)
+        {
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking == null) return NotFound();
+
+            if (booking.PaymentStatus != "Paid")
+            {
+                booking.PaymentStatus = "Paid";
+                booking.Status = "Approved";
+                await _context.SaveChangesAsync();
+            }
+
+            // Success view instead of redirect
+            return View();
+        }
+
 
         // ---------------- My Bookings ----------------
         public async Task<IActionResult> MyBookings()
@@ -136,13 +197,14 @@ namespace QuickRentMyRide.Controllers
             return RedirectToAction("MyBookings");
         }
 
+
         // ---------------- CHECK AVAILABILITY ----------------
         [HttpGet]
         public async Task<IActionResult> CheckAvailability(DateTime? startDate, DateTime? endDate)
         {
             var cars = await _context.Cars.ToListAsync();
 
-            if (startDate.HasValue && endDate.HasValue)
+            if (startDate.HasValue && endDate.HasValue && startDate <= endDate)
             {
                 cars = cars.Where(c =>
                     !_context.Bookings.Any(b =>
@@ -160,5 +222,7 @@ namespace QuickRentMyRide.Controllers
 
             return View(cars);
         }
+
+
     }
 }

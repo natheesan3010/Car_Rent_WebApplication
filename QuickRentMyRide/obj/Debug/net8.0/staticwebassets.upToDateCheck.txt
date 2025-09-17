@@ -3,10 +3,19 @@ wwwroot\css\login.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\044a8788-e2eb-4210-83bc-e7d4d7df43cb.webp
+wwwroot\images\08969e2a-cf87-453e-8604-39a8d3def224.jpg
+wwwroot\images\0918d9c5-ebe7-4c01-8abc-1361bdfea859.webp
 wwwroot\images\0f64f3e3-15ae-4ac6-ba8c-962fcdcdcc59.webp
+wwwroot\images\1c4a99cc-0132-4c3c-a9f2-bc6a4920065f.jpg
 wwwroot\images\316432c7-a788-4bdf-bf4e-587ea4955529.webp
+wwwroot\images\389b07dc-502f-4d44-baeb-95a7982d0650.jpg
+wwwroot\images\3de23b6b-d8e8-479d-a864-5e8b7d42c3fc.webp
 wwwroot\images\49647038-24bc-4f3e-b36d-03fa8bb955c0.jpg
+wwwroot\images\7aad34a3-1e12-4078-bb32-8ff27497ac89.jpg
+wwwroot\images\8866bb16-5559-493a-9829-6555e61035ea.webp
 wwwroot\images\89de2be91be544eeb77e28bd5113d897.webp
+wwwroot\images\8c9e2cab-129c-4d84-ae88-ad5b8efa4cb8.webp
+wwwroot\images\9b67c003-d73d-4eba-869b-1f19d8023562.webp
 wwwroot\images\about.png
 wwwroot\images\af78493e-b8c1-4902-8e15-206dc0d02d38.webp
 wwwroot\images\Banner1.jpg
@@ -18,8 +27,13 @@ wwwroot\images\bf187a04-9323-4325-9517-267cbcec25bf.webp
 wwwroot\images\C1.jpg
 wwwroot\images\C2.webp
 wwwroot\images\c85e4d1e-7349-4f35-ad51-62d8c1cc0801.webp
+wwwroot\images\ca704d5e-0b3a-44f7-9a1e-e6ad47f250a0.webp
 wwwroot\images\car-cars-lamborghini-aventador-63764.jpg
+wwwroot\images\d9f406fb-344b-4486-9476-f9d7675f33f1.jpg
+wwwroot\images\e68e4087-6a23-49b4-a460-8e0128bd3d8f.jpg
 wwwroot\images\ea29908c-f30e-445e-8851-6b9e8caac665.webp
+wwwroot\images\eda84128-eaef-47c8-8a8f-449b2c35b030.webp
+wwwroot\images\ef2d1d4c-c7ac-4a6c-b9a9-b28fb6ffa07a.jpg
 wwwroot\images\Logo.jpg
 wwwroot\images\OIP (1).webp
 wwwroot\images\OIP (2).webp
@@ -83,6 +97,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\images\eda84128-eaef-47c8-8a8f-449b2c35b030.webp
-wwwroot\images\8c9e2cab-129c-4d84-ae88-ad5b8efa4cb8.webp
-wwwroot\images\389b07dc-502f-4d44-baeb-95a7982d0650.jpg

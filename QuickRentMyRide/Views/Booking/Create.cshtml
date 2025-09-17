@@ -7,9 +7,7 @@
 <div class="container py-5">
     @if (car == null)
     {
-        <div class="alert alert-danger text-center">
-            Car details not found!
-        </div>
+        <div class="alert alert-danger text-center">Car details not found!</div>
     }
     else
     {
@@ -17,47 +15,26 @@
             <div class="row g-0">
                 <div class="col-md-5">
                     <img src="@(string.IsNullOrEmpty(car.CarImage) ? "~/images/default-car.webp" : car.CarImage)"
-                         class="img-fluid h-100" style="object-fit: cover;"
-                         alt="@car.CarBrand @car.CarModel" />
+                         class="img-fluid h-100 rounded-start" style="object-fit: cover;" alt="@car.CarBrand @car.CarModel" />
                 </div>
                 <div class="col-md-7">
                     <div class="card-body p-4">
-                        <h2 class="card-title mb-3 fw-bold">@car.CarBrand @car.CarModel</h2>
-                        <span class="badge bg-success fs-6 mb-3 shadow-sm">
-                            Price per day: LKR @car.RentPerDay
-                        </span>
-                        <hr />
-                        <h5 class="mb-3 fw-semibold">Booking Details</h5>
+                        <h2>@car.CarBrand @car.CarModel</h2>
+                        <p>Price per day: LKR @car.RentPerDay</p>
 
-                        <form id="bookingForm" method="post">
+                        <form id="bookingForm" class="needs-validation" novalidate>
                             <input type="hidden" id="CarID" value="@car.CarID" />
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Start Date</label>
-                                    <input type="date" id="StartDate" class="form-control form-control-lg"
-                                           value="@Model?.StartDate.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString(" yyyy-MM-dd")" required />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">End Date</label>
-                                    <input type="date" id="EndDate" class="form-control form-control-lg"
-                                           value="@Model?.EndDate.ToString("yyyy-MM-dd") ?? DateTime.Today.AddDays(1).ToString(" yyyy-MM-dd")" required />
-                                </div>
+                            <div class="mb-3">
+                                <label>Start Date</label>
+                                <input type="date" id="StartDate" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" required />
                             </div>
-
-                            <button type="button" id="checkout-button" class="btn btn-success btn-lg w-100 shadow-sm book-btn">
-                                <i class="bi bi-credit-card me-1"></i> Pay & Book Now
-                            </button>
+                            <div class="mb-3">
+                                <label>End Date</label>
+                                <input type="date" id="EndDate" class="form-control" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <button type="button" id="checkout-button" class="btn btn-success w-100">Pay & Book Now</button>
                         </form>
-
-                        @if (TempData["SuccessMessage"] != null)
-                        {
-                            <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
-                        }
-
-                        @if (TempData["ErrorMessage"] != null)
-                        {
-                            <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
-                        }
+                        <div id="messages" class="mt-3"></div>
                     </div>
                 </div>
             </div>
@@ -66,40 +43,38 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
     <script src="https://js.stripe.com/v3/"></script>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var stripe = Stripe('@publishableKey');
-
-            var btn = document.getElementById("checkout-button");
-            if(btn){
-                btn.addEventListener("click", function () {
-                    var carID = document.getElementById("CarID").value;
-                    var startDate = document.getElementById("StartDate").value;
-                    var endDate = document.getElementById("EndDate").value;
-
-                    fetch('@Url.Action("Checkout", "Booking")', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ carID: parseInt(carID), startDate: startDate, endDate: endDate })
-                    })
-                    .then(res => res.json())
-                    .then(data => stripe.redirectToCheckout({ sessionId: data.id }))
-                    .catch(err => console.error(err));
-                });
+        document.getElementById("checkout-button").addEventListener("click", function () {
+            var form = document.getElementById("bookingForm");
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
             }
+
+            var carID = document.getElementById("CarID").value;
+            var startDate = document.getElementById("StartDate").value;
+            var endDate = document.getElementById("EndDate").value;
+
+            fetch('@Url.Action("Create", "Booking")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ CarID: parseInt(carID), StartDate: startDate, EndDate: endDate })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.bookingId) {
+                    var stripe = Stripe('@publishableKey');
+                    fetch('@Url.Action("CreateCheckoutSession", "Booking")?id=' + data.bookingId, { method: 'POST' })
+                    .then(res => res.json())
+                    .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+                    .catch(err => console.error(err));
+                } else {
+                    document.getElementById("messages").innerHTML =
+                        '<div class="alert alert-danger">' + (data.error || 'Booking failed') + '</div>';
+                }
+            })
+            .catch(err => console.error(err));
         });
     </script>
-
-    <style>
-        .book-btn {
-            transition: transform 0.3s;
-        }
-
-            .book-btn:hover {
-                transform: scale(1.03);
-            }
-    </style>
 }

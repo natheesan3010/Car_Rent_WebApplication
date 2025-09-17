@@ -1,10 +1,10 @@
 ﻿@{
     var role = Context.Session.GetString("Role");
 
-    // if (role == "Admin")
-    // {
-    //     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    // }
+    if (role == "Admin")
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
     if (role == "Customer")
     {
         Layout = "~/Views/Shared/_CustomerLayout.cshtml";
