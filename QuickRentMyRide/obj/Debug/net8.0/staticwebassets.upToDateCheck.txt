@@ -16,6 +16,7 @@ wwwroot\images\8866bb16-5559-493a-9829-6555e61035ea.webp
 wwwroot\images\89de2be91be544eeb77e28bd5113d897.webp
 wwwroot\images\8c9e2cab-129c-4d84-ae88-ad5b8efa4cb8.webp
 wwwroot\images\9b67c003-d73d-4eba-869b-1f19d8023562.webp
+wwwroot\images\9e85f21b-352f-4cc9-99f6-2f0fc6011ca5.webp
 wwwroot\images\about.png
 wwwroot\images\af78493e-b8c1-4902-8e15-206dc0d02d38.webp
 wwwroot\images\Banner1.jpg
@@ -38,6 +39,9 @@ wwwroot\images\Logo.jpg
 wwwroot\images\OIP (1).webp
 wwwroot\images\OIP (2).webp
 wwwroot\images\OIP.webp
+wwwroot\images\team1.jpg
+wwwroot\images\team2.jpg
+wwwroot\images\team3.jpg
 wwwroot\images\Thumbs.db
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

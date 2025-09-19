@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using QuickRentMyRide.Data;
@@ -53,6 +54,31 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+
+// ---------------- Seed Default Admin ----------------
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var hasher = new PasswordHasher<User>();
+
+    string adminEmail = "admin@gmail.com";   // ✅ உங்கள் default admin email
+    string adminUserName = "Admin";          // ✅ username
+    string adminPassword = "Admin@123";      // ✅ default password (later change!)
+
+    if (!db.Users.Any(u => u.Gmail_Address == adminEmail))
+    {
+        var adminUser = new User
+        {
+            Gmail_Address = adminEmail,
+            Username = adminUserName,
+            Role = "Admin"
+        };
+        adminUser.PasswordHash = hasher.HashPassword(adminUser, adminPassword);
+
+        db.Users.Add(adminUser);
+        db.SaveChanges();
+    }
+}
 
 // ---------------- Middleware ----------------
 if (!app.Environment.IsDevelopment())

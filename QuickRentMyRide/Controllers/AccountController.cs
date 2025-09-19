@@ -140,7 +140,7 @@ namespace QuickRentMyRide.Controllers
                     return user.Role.ToLower() switch
                     {
                         "customer" => RedirectToAction("Dashboard", "Customer"),
-                        "admin" => RedirectToAction("Index", "Admin"),
+                        "admin" => RedirectToAction("Dashboard", "Admin"),
                         "staff" => RedirectToAction("Index", "Staff"),
                         _ => RedirectToAction("Login")
                     };
